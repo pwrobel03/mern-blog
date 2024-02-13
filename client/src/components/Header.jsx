@@ -14,7 +14,7 @@ const Header = () => {
                 <span className='px-2 py-1 text-white rounded-lg bg-gradient-to-r from-emerald-400 to-emerald-200'>Sahand's</span>Blog
             </Link>
             <form >
-                <TextInput
+                <TextInput  
                     type='text'
                     placeholder='Search...'
                     rightIcon={AiOutlineSearch}
