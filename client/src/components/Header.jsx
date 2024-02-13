@@ -7,12 +7,14 @@ import { Link, useLocation } from 'react-router-dom'
 const Header = () => {
     const path = useLocation().pathname;
     return (
-        <Navbar className='border-b-2'>
-            <Link
-                to={"/"}
-                className='self-center whitespace-nowrap text-sm sm:text-xl font-semibold dark:text-white'>
-                <span className='px-2 py-1 text-white rounded-lg bg-gradient-to-r from-emerald-400 to-emerald-200'>Sahand's</span>Blog
-            </Link>
+        <Navbar className='border-b-2 items-center'>
+            <div className='flex items-start'>
+                <Link
+                    to={"/"}
+                    className='self-center whitespace-nowrap text-sm sm:text-xl font-semibold dark:text-white'>
+                    <span className='px-2 py-1 text-white rounded-lg bg-gradient-to-r from-emerald-400 to-emerald-200'>Sahand's</span>Blog
+                </Link>
+            </div>
             <form>
                 <TextInput
                     type='text'
