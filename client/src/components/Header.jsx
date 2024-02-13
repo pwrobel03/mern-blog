@@ -13,8 +13,8 @@ const Header = () => {
                 className='self-center whitespace-nowrap text-sm sm:text-xl font-semibold dark:text-white'>
                 <span className='px-2 py-1 text-white rounded-lg bg-gradient-to-r from-emerald-400 to-emerald-200'>Sahand's</span>Blog
             </Link>
-            <form >
-                <TextInput  
+            <form>
+                <TextInput
                     type='text'
                     placeholder='Search...'
                     rightIcon={AiOutlineSearch}
@@ -31,14 +31,14 @@ const Header = () => {
                 <Button className='w-12 h-10 hidden sm:inline' color='green' pill>
                     <FaMoon />
                 </Button>
-                <Link>
+                <Link to="/sign-in">
                     <Button outline className=' text-white bg-gradient-to-r from-emerald-400 to-emerald-200' color='green'>
                         Sign In
                     </Button>
                 </Link>
                 <Navbar.Toggle></Navbar.Toggle>
             </div>
-            <Navbar.Collapse>
+            <Navbar.Collapse className='font-bold'>
                 <Navbar.Link active={path === "/"} as={"div"} >
                     <Link to="/">Home</Link>
                 </Navbar.Link>
