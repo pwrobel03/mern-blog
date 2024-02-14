@@ -1,9 +1,10 @@
-import React, { useState } from 'react'
+import React, { useEffect, useState } from 'react'
 import { Link, useNavigate } from 'react-router-dom'
 import { Label, TextInput, Button, Toast, Alert, Spinner } from 'flowbite-react'
-import { signInStart, signInSuccess, signInFailure } from '../redux/user/userSlice'
+import { signInStart, signInSuccess, signInFailure, clearError } from '../redux/user/userSlice'
 import { useDispatch, useSelector } from 'react-redux'
 import OAuth from '../components/OAuth'
+
 
 const SignIn = () => {
     const navigate = useNavigate();
@@ -13,6 +14,12 @@ const SignIn = () => {
         password: ""
     });
     const { loading, error: errorMessage } = useSelector(state => state.user)
+
+
+    useEffect(() => {
+        console.log("Jazda");
+        dispatch(clearError())
+    }, [])
 
     const handleChange = (e) => {
         setFormData({ ...formData, [e.target.id]: e.target.value.trim() })
@@ -106,9 +113,12 @@ const SignIn = () => {
                             Sign Up
                         </Link>
                     </div>
-                    {errorMessage &&
-                        <Alert color="failure" className='mt-5'>
+                    {errorMessage
+                        ? <Alert color="failure" className='mt-5 font-bold text-base'>
                             {errorMessage}
+                        </Alert>
+                        : <Alert color="failure" className='mt-5 font-bold font-bold text-base opacity-0'>
+                            "Please fill out all fields"
                         </Alert>
                     }
                 </div>

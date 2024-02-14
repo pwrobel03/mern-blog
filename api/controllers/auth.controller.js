@@ -5,6 +5,15 @@ import jwt from "jsonwebtoken";
 import dotenv from "dotenv"
 
 dotenv.config()
+
+const generatePassword = (
+    length = 20,
+    wishlist = '0123456789ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz~!@-#$'
+) =>
+    Array.from(crypto.getRandomValues(new Uint32Array(length)))
+        .map((x) => wishlist[x % wishlist.length])
+        .join('')
+
 export const signup = async (req, res, next) => {
     const { username, email, password } = req.body;
 
@@ -58,6 +67,53 @@ export const signIn = async (req, res, next) => {
             .cookie("access_token", token, { httpOnly: true })
             .json(validUser)
 
+    } catch (error) {
+        next(error);
+    }
+}
+
+export const google = async (req, res, next) => {
+    const { email, name, googlePhotoUrl } = req.body
+    try {
+        const user = await User.findOne({ email })
+        // user exist
+        if (user) {
+            console.log("Login");
+            const token = jwt.sign(
+                { userId: user._id },
+                process.env.JWT_SECRET_KEY
+            )
+
+            user.password = null
+            res
+                .status(200)
+                .cookie("access_token", token, { httpOnly: true })
+                .json(user)
+        } else {
+            console.log("Register");
+            // new user
+            const password = generatePassword()
+            const hashedPassword = bcryptjs.hashSync(password, 10)
+            const newUser = new User({
+                username: name.toLowerCase().split(' ').join('') + Math.random().toString(9).slice(-4),
+                email,
+                password: hashedPassword,
+                profilePicture: googlePhotoUrl
+            })
+            console.log(googlePhotoUrl);
+            await newUser.save()
+
+            const token = jwt.sign(
+                { userId: newUser._id },
+                process.env.JWT_SECRET_KEY
+            )
+
+            newUser.password = null
+            res
+                .status(200)
+                .cookie("access_token", token, { httpOnly: true })
+                .json(newUser)
+        }
     } catch (error) {
         next(error);
     }

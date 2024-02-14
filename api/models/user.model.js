@@ -1,4 +1,8 @@
 import mongoose from "mongoose"
+import dotenv from "dotenv"
+dotenv.config()
+
+const BASE_URL = process.env.BASE_URL || 'http://localhost:5173';
 const userSchema = new mongoose.Schema(
     {
         username: {
@@ -14,6 +18,10 @@ const userSchema = new mongoose.Schema(
         password: {
             type: String,
             required: true,
+        },
+        profilePicture: {
+            type: String,
+            default: () => `${BASE_URL}/api/assets/profile.png`
         }
     },
     {

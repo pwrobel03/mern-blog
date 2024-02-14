@@ -18,6 +18,9 @@ app.listen(3000, () => {
     console.log("Server has started on port 3000");
 })
 
+// Dodaj tę linię, aby udostępnić folder `assets` jako statyczny
+app.use('/api/assets', express.static('api/assets'));
+
 app.use("/api/user", userRoutes)
 app.use("/api/auth", authRoutes)
 app.use((error, req, res, next) => {

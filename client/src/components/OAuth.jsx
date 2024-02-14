@@ -19,9 +19,10 @@ const OAuth = () => {
 
         try {
             const resultsFromGoogle = await signInWithPopup(auth, provider)
+            console.log(resultsFromGoogle);
             const saveUserData = await fetch("/api/auth/google", {
                 method: "POST",
-                headers: "application/json",
+                headers: { 'Content-Type': 'application/json' },
                 body: JSON.stringify({
                     name: resultsFromGoogle.user.displayName,
                     email: resultsFromGoogle.user.email,
@@ -30,7 +31,7 @@ const OAuth = () => {
             })
 
             const result = await saveUserData.json()
-            if (result.ok) {
+            if (result) {
                 dispatch(signInSuccess(result))
                 navigate("/")
             }
