@@ -18,7 +18,7 @@ const Header = () => {
     }
 
     return (
-        <Navbar className='border-b-2 dark:border-zinc-700 mb-10 shadow-sm dark:shadow-zinc-600 py-4 items-center dark:bg-zinc-800'>
+        <Navbar className='border-b-2 dark:border-zinc-700 shadow-sm dark:shadow-zinc-600 py-4 items-center dark:bg-zinc-800'>
             <div className='flex items-start'>
                 <Link
                     to={"/"}

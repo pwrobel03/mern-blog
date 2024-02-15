@@ -49,8 +49,8 @@ const SignUp = () => {
 
 
   return (
-    <div className='my-auto'>
-      <div className='flex p-3 md:gap-10 gap-3 max-w-4xl mx-auto flex-col md:flex-row md:items-center px-6'>
+    <div className=' my-auto py-10'>
+      <div className='relative flex p-3 md:gap-10 gap-3 max-w-4xl mx-auto flex-col md:flex-row md:items-center px-6'>
         {/* Left */}
         <div className="flex flex-1 flex-col">
           <Link
@@ -116,12 +116,9 @@ const SignUp = () => {
               Sign In
             </Link>
           </div>
-          {errorMessage
-            ? <Alert color="failure" className='mt-5 font-bold text-base'>
+          {errorMessage &&
+            <Alert color="failure" className='my-4 md:w-[calc(50%-2.5rem)] md:ml-6 md:absolute bottom-[4rem] left-0 font-semibold text-base'>
               {errorMessage}
-            </Alert>
-            : <Alert color="failure" className='mt-5 font-bold font-bold text-base opacity-0'>
-              "Please fill out all fields"
             </Alert>
           }
         </div>

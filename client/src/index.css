@@ -45,9 +45,6 @@ html {
     background: transparent !important;
 }
 
-:is(.dark .dark\:bg-gray-700) {
-    background-color: rgb(39, 39, 42) !important;
-}
 
 :is(.dark .dark\:text-gray-400) {
     color: rgba(192, 192, 192, 1) !important;
@@ -55,6 +52,14 @@ html {
 
 :is(.dark .dark\:border-gray-600) {
     border-color: rgb(63, 63, 70) !important;
+}
+
+:is(.dark .dark\:bg-gray-700) {
+    background-color: rgb(39, 39, 42) !important;
+}
+
+:is(.dark .dark\:bg-gray-800) {
+    background-color: rgb(49, 49, 52) !important;
 }
 
 :is(.dark .dark\:enabled\:hover\:bg-green-700:hover:enabled) {
