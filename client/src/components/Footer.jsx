@@ -5,10 +5,10 @@ import { BsDropbox, BsFacebook, BsGithub, BsInstagram } from "react-icons/bs"
 
 const FooterCom = () => {
     return (
-        <Footer container className='border-t-4 text-lg rounded-none border-emerald-500 flex-col px-2 sm:px-4'>
+        <Footer container className='mt-auto dark:bg-zinc-800 border-t-4 text-lg rounded-none border-emerald-500 flex-col px-2 sm:px-4'>
             <div className='w-full max-w-7xl mx-auto flex flex-col md:flex-row gap-8 md:justify-evenly items-center'>
 
-                <div className='grid md:mt-0 mt-5 grid-cols-2 gap-8 sm:grid-cols-3 sm:gap-0 sm:mt-0'>
+                <div className='grid md:mt-0 mt-5 grid-cols-1 xs:grid-cols-2 gap-8 md:grid-cols-3 sm:gap-2 sm:mt-0'>
                     <div>
                         <Footer.Title title='Legal' />
                         <Footer.LinkGroup col>
@@ -41,7 +41,7 @@ const FooterCom = () => {
                         <Footer.Title title='Follow us' />
                         <Footer.LinkGroup col>
                             <Footer.Link
-                                href='https://www.github.com/sahandghavidel'
+                                href='https://www.github.com/https://github.com/pwrobel03'
                                 target='_blank'
                                 rel='noopener noreferrer'
                             >

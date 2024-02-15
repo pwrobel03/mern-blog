@@ -49,8 +49,8 @@ const SignUp = () => {
 
 
   return (
-    <div className='min-h-screen mt-20 '>
-      <div className='flex p-3 gap-10 max-w-4xl mx-auto flex-col md:flex-row md:items-center px-6'>
+    <div className='my-auto'>
+      <div className='flex p-3 md:gap-10 gap-3 max-w-4xl mx-auto flex-col md:flex-row md:items-center px-6'>
         {/* Left */}
         <div className="flex flex-1 flex-col">
           <Link
@@ -64,8 +64,8 @@ const SignUp = () => {
           </p>
         </div>
         {/* right */}
-        <div className="flex-1 ">
-          <form className='flex flex-col gap-4 text-xl' onSubmit={handleSubmit}>
+        <div className="flex-1">
+          <form className='flex flex-col md:gap-4 gap-2 text-xl' onSubmit={handleSubmit}>
             <div>
               <Label value='Your username'></Label>
               <TextInput

@@ -55,7 +55,7 @@ const SignIn = () => {
 
 
     return (
-        <div className='min-h-screen mt-20 '>
+        <div className='my-auto'>
             <div className='flex p-3 gap-10 max-w-4xl mx-auto flex-col md:flex-row md:items-center px-6'>
                 {/* Left */}
                 <div className="flex flex-1 flex-col">

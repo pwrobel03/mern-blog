@@ -1,3 +1,104 @@
 @tailwind base;
 @tailwind components;
 @tailwind utilities;
+
+.ql-editor {
+    font-size: 1.05rem;
+}
+
+html {
+    background-color: rgb(0, 0, 0);
+}
+
+
+.post-content p {
+    margin-bottom: 0.5rem;
+}
+
+.post-content h1 {
+    font-size: 1.5rem;
+    font-weight: 600;
+    font-family: sans-serif;
+    margin: 1.5rem 0;
+}
+
+.post-content h2 {
+    font-size: 1.4rem;
+    font-family: sans-serif;
+    margin: 1.5rem 0;
+}
+
+.post-content a {
+    color: rgb(73, 149, 199);
+    text-decoration: none;
+}
+
+.post-content a:hover {
+    text-decoration: underline;
+}
+
+.dark .post-content a {
+    color: red;
+}
+
+:is(.dark .dark\:bg-gray-900) {
+    background: transparent !important;
+}
+
+:is(.dark .dark\:bg-gray-700) {
+    background-color: rgb(39, 39, 42) !important;
+}
+
+:is(.dark .dark\:text-gray-400) {
+    color: rgba(192, 192, 192, 1) !important;
+}
+
+:is(.dark .dark\:border-gray-600) {
+    border-color: rgb(63, 63, 70) !important;
+}
+
+:is(.dark .dark\:enabled\:hover\:bg-green-700:hover:enabled) {
+    background-color: transparent !important;
+}
+
+.text-gray-500 {
+    color: rgba(192, 192, 192, 1);
+}
+
+@-webkit-keyframes autofill {
+
+    0%,
+    100% {
+        color: #666;
+        background: transparent;
+    }
+}
+
+input:-webkit-autofill {
+    -webkit-animation-delay: 1s;
+    /* Safari support - any positive time runs instantly */
+    -webkit-animation-name: autofill;
+    -webkit-animation-fill-mode: both;
+}
+
+input#email,
+input#password,
+input#username {
+    border: 0px;
+    outline: 0px;
+}
+
+input#email:focus,
+input#password:focus,
+input#username:focus {
+    box-shadow: none;
+    box-shadow: 1px 1px 1px 1px rgba(255, 255, 255, 0.3);
+}
+
+input#email:focus-visible,
+input#password:focus-visible,
+input#username:focus-visible {
+    outline: 0px solid green !important;
+    background-color: green;
+    border: rgba(1, 1, 1, 0);
+}

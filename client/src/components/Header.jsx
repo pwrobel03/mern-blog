@@ -1,15 +1,24 @@
 import { Navbar, TextInput, Button, Dropdown, Avatar } from 'flowbite-react'
 import React, { useEffect } from 'react'
 import { AiOutlineSearch } from "react-icons/ai"
-import { FaMoon } from "react-icons/fa"
+import { FaMoon, FaSun } from "react-icons/fa"
 import { Link, useLocation } from 'react-router-dom'
-import { useSelector } from 'react-redux'
+import { useDispatch, useSelector } from 'react-redux'
+import { toggleTheme } from "../redux/theme/themeSlice"
 
 const Header = () => {
     const path = useLocation().pathname;
-    const { currentUser } = useSelector(state => state.user)
+    const dispatch = useDispatch();
+    const { currentUser } = useSelector((state) => state.user)
+    const { theme } = useSelector((state) => state.theme)
+
+    const changeTheme = () => {
+        console.warn("dziwy");
+        dispatch(toggleTheme())
+    }
+
     return (
-        <Navbar className='border-b-2 py-4 items-center'>
+        <Navbar className='border-b-2 dark:border-zinc-700 mb-10 shadow-sm dark:shadow-zinc-600 py-4 items-center dark:bg-zinc-800'>
             <div className='flex items-start'>
                 <Link
                     to={"/"}
@@ -27,13 +36,18 @@ const Header = () => {
                 </TextInput>
             </form>
             <Button
-                className='w-12 h-10 lg:hidden '
-                color='green'>
+                outline
+                className='focus:ring-transparent shadow-none ring-0 w-12 h-10 lg:hidden p-0 bg-transparent dark:bg-transparent border-2 border-zinc-600 enabled:hover:bg-gray-500 dark:enabled:hover:bg-[rgba(0,0,0,0.2)] dark:focus:ring-0 rounded-lg'>
                 <AiOutlineSearch />
             </Button>
             <div className='flex gap-2 md:order-2 items-center'>
-                <Button className='rounded-full p-0 hidden sm:inline' color='green' pill>
-                    <FaMoon className='text-xl px-0' />
+                <Button
+                    onClick={changeTheme}
+                    className=' outline-none dark:bg-transparent bg-transparent rounded-full w-10 h-10 focus:ring-0 enabled:hover:bg-transparent dark:enabled:hover:bg-transparent'>
+                    {theme === "light"
+                        ? <FaMoon className='text-xl text-gray-500 px-0' />
+                        : <FaSun className='text-xl px-0' />
+                    }
                 </Button>
                 {currentUser
                     ? <Dropdown
@@ -46,27 +60,27 @@ const Header = () => {
                                 src={currentUser.profilePicture}
                             />
                         }
+                        className="dark:bg-zinc-700"
                     >
-                        {console.log(currentUser.profilePicture)}
                         <Dropdown.Header>
                             <span className='block text-sm italic'>@{currentUser.username}</span>
                             <span className='block mt-1 text-md truncate'>{currentUser.email}</span>
                         </Dropdown.Header>
                         <Link to={"/dashboard?tab=profile"}>
-                            <Dropdown.Item>Profile</Dropdown.Item>
+                            <Dropdown.Item className='dark:hover:bg-[rgba(0,0,0,0.3)] dark:focus:bg-[rgba(0,0,0,0.3)]'>Profile</Dropdown.Item>
                         </Link>
                         <Dropdown.Divider />
                         <Link to={"/dashboard?tab=profile"}>
-                            <Dropdown.Item className='text-red-500 font-semibold'>Sign Out</Dropdown.Item>
+                            <Dropdown.Item className='dark:text-red-500 dark:hover:text-red-400 dark:hover:focus:text-red-400 text-red-500 font-semibold dark:hover:bg-[rgba(0,0,0,0.3)] dark:focus:bg-[rgba(0,0,0,0.3)]'>Sign Out</Dropdown.Item>
                         </Link>
                     </Dropdown>
                     : <Link to="/sign-in">
-                        <Button outline className=' text-white bg-gradient-to-r from-emerald-400 to-emerald-200' color='green'>
+                        <Button outline className='dark:focus:ring-transparent focus:ring-transparent ring-0 text-white bg-gradient-to-r from-emerald-400 to-emerald-200'>
                             Sign In
                         </Button>
                     </Link>
                 }
-                <Navbar.Toggle></Navbar.Toggle>
+                <Navbar.Toggle className='text-gray-500 focus:ring-0 dark:text-zinc-600 dark:hover:bg-zinc-900 dark:focus:ring-0'></Navbar.Toggle>
             </div>
             <Navbar.Collapse className='font-bold'>
                 <Navbar.Link active={path === "/"} as={"div"} >
