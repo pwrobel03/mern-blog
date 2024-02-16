@@ -2,7 +2,7 @@ import React from 'react'
 
 const About = () => {
     return (
-        <div className='min-h-[1200px]'>
+        <div className='flex flex-1'>
             About
         </div>
     )

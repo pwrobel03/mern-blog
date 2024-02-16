@@ -18,8 +18,8 @@ const Header = () => {
     }
 
     useEffect(() => {
-        console.log(currentUser);
-    }, [])
+        console.log("Leci navbar");
+    }, [path, theme])
 
     return (
         <Navbar className='border-b-2 dark:border-zinc-700 shadow-sm dark:shadow-zinc-600 py-4 items-center dark:bg-zinc-800'>
@@ -58,7 +58,11 @@ const Header = () => {
                         arrowIcon={false}
                         inline
                         label={
-                            <div className='w-10 h-10 bg-cover rounded-full' style={{ backgroundImage: `url(${currentUser.profilePicture})` }} />
+                            <img
+                                className='h-12 w-12 rounded-full p-0.5'
+                                alt="profile picture"
+                                src={currentUser.profilePicture}
+                            />
                         }
                         className="dark:bg-zinc-700"
                     >
@@ -83,15 +87,29 @@ const Header = () => {
                 <Navbar.Toggle className='text-gray-500 focus:ring-0 dark:text-zinc-600 dark:hover:bg-zinc-900 dark:focus:ring-0'></Navbar.Toggle>
             </div>
             <Navbar.Collapse className='font-bold'>
-                <Navbar.Link active={path === "/"} as={"div"} >
+                <Navbar.Link active={path === "/"} as={"div"} className={(path === "/" ? theme === "light" ? "custom-navbar-active-light" : "custom-navbar-active-dark" : theme === "light" ? "custom-navbar-light" : "custom-navbar-dark")} >
                     <Link to="/">Home</Link>
                 </Navbar.Link>
-                <Navbar.Link active={path === "/about"} as={"div"}>
+                <Navbar.Link active={path === "/about"} as={"div"} className={(path === "/about" ? theme === "light" ? "custom-navbar-active-light" : "custom-navbar-active-dark" : theme === "light" ? "custom-navbar-light" : "custom-navbar-dark")} >
+                    <Link to="/about">About</Link>
+                </Navbar.Link>
+                <Navbar.Link active={path === "/projects"} as={"div"} className={(path === "/projects" ? theme === "light" ? "custom-navbar-active-light" : "custom-navbar-active-dark" : theme === "light" ? "custom-navbar-light" : "custom-navbar-dark")} >
+                    <Link to="/projects">About</Link>
+                </Navbar.Link>
+
+                {/* <Navbar.Link active={path === "/home"} as={"div"} className='active:bg-red-900  hover:bg-neutral-50 bg-transparent border-neutral-100 text-neutral-400 dark:bg-zinc-800 border-b-2 dark:border-zinc-700' >
+                    <Link to="/home">Home</Link>
+                </Navbar.Link>
+                <Navbar.Link active={path === "/about"} as={"div"} className='  hover:bg-neutral-50 bg-transparent border-neutral-100 text-neutral-400 dark:bg-zinc-800 border-b-2 dark:border-zinc-700' >
+                    <Link to="/about">Home</Link>
+                </Navbar.Link> */}
+
+                {/* <Navbar.Link active={path === "/about"} as={"div"}>
                     <Link to="/about">About</Link>
                 </Navbar.Link>
                 <Navbar.Link active={path === "/projects"} as={"div"}>
                     <Link to="/projects">Projects</Link>
-                </Navbar.Link>
+                </Navbar.Link> */}
             </Navbar.Collapse>
         </Navbar >
     )

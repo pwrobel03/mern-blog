@@ -96,14 +96,53 @@ input#username {
 input#email:focus,
 input#password:focus,
 input#username:focus {
-    box-shadow: none;
     box-shadow: 1px 1px 1px 1px rgba(255, 255, 255, 0.3);
 }
 
 input#email:focus-visible,
 input#password:focus-visible,
 input#username:focus-visible {
-    outline: 0px solid green !important;
-    background-color: green;
+    outline: 0px !important;
     border: rgba(1, 1, 1, 0);
+}
+
+.custom-navbar-light,
+.custom-navbar-dark,
+.custom-navbar-active-light,
+.custom-navbar-active-dark {
+    background-color: transparent;
+}
+
+.custom-navbar-active-light,
+.custom-navbar-light {
+    color: rgba(192, 192, 192, 1);
+    border-bottom: 0.1em solid rgba(240, 240, 240, 1);
+}
+
+.custom-navbar-light:hover {
+    background-color: rgba(248, 248, 248, 1) !important;
+    color: rgba(192, 192, 192, 1);
+}
+
+.custom-navbar-active-light {
+    background-color: rgba(240, 240, 240, 1) !important;
+    color: rgba(192, 192, 192, 1);
+
+}
+
+.custom-navbar-active-dark,
+.custom-navbar-dark {
+    color: rgba(192, 192, 192, 1);
+    border-bottom: 0.1em solid rgba(49, 49, 52, 1) !important;
+}
+
+.custom-navbar-dark:hover {
+    background-color: rgba(49, 49, 52, 1) !important;
+    color: #FFF;
+}
+
+.custom-navbar-active-dark {
+    background-color: rgba(59, 59, 62, 1);
+    color: #FFF;
+    border-bottom: 2px solid red;
 }
