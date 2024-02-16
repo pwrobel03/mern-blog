@@ -18,7 +18,7 @@ const Dashboard = () => {
 
 
     return (
-        <div className='flex my-auto min-h-screen flex-col md:flex-row'>
+        <div className='flex flex-1 flex-col  md:flex-row'>
             {/* Sidebar */}
             <div className='md:min-w-56'>
                 <DashSideBar />

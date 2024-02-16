@@ -17,6 +17,10 @@ const Header = () => {
         dispatch(toggleTheme())
     }
 
+    useEffect(() => {
+        console.log(currentUser);
+    }, [])
+
     return (
         <Navbar className='border-b-2 dark:border-zinc-700 shadow-sm dark:shadow-zinc-600 py-4 items-center dark:bg-zinc-800'>
             <div className='flex items-start'>
@@ -54,11 +58,7 @@ const Header = () => {
                         arrowIcon={false}
                         inline
                         label={
-                            <img
-                                className='h-12 w-12 rounded-full p-0.5'
-                                alt="profile picture"
-                                src={currentUser.profilePicture}
-                            />
+                            <div className='w-10 h-10 bg-cover rounded-full' style={{ backgroundImage: `url(${currentUser.profilePicture})` }} />
                         }
                         className="dark:bg-zinc-700"
                     >
@@ -93,7 +93,7 @@ const Header = () => {
                     <Link to="/projects">Projects</Link>
                 </Navbar.Link>
             </Navbar.Collapse>
-        </Navbar>
+        </Navbar >
     )
 }
 
