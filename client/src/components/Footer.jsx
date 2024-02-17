@@ -8,7 +8,7 @@ const FooterCom = () => {
         <Footer container className='mt-auto dark:bg-zinc-800 border-t-4 text-lg rounded-none border-emerald-500 flex-col px-2 sm:px-4'>
             <div className='w-full max-w-7xl mx-auto flex flex-col md:flex-row gap-8 md:justify-evenly items-center'>
 
-                <div className='grid md:mt-0 mt-5 grid-cols-1 xs:grid-cols-2 gap-8 md:grid-cols-3 sm:gap-2 sm:mt-0'>
+                <div className='grid md:mt-0 mt-5 grid-cols-1 xs:grid-cols-2 gap-8 sm:grid-cols-3 sm:gap-2 sm:mt-0'>
                     <div>
                         <Footer.Title title='Legal' />
                         <Footer.LinkGroup col>
@@ -61,7 +61,7 @@ const FooterCom = () => {
             </div>
             <div className='flex sm:flex-row flex-col gap-2 sm:justify-between mt-5 py-4 border-t-2'>
                 <Footer.Copyright href='/' by="sahand's blog" year={new Date().getFullYear()} />
-                <div className='flex gap-4'>
+                <div className='flex xs:flex-row flex-col gap-4'>
                     <Footer.Icon href='#' icon={BsFacebook} />
                     <Footer.Icon href='#' icon={BsInstagram} />
                     <Footer.Icon href='#' icon={BsDropbox} />

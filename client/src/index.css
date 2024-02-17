@@ -6,6 +6,10 @@
     font-size: 1.05rem;
 }
 
+* {
+    box-sizing: border-box;
+}
+
 html {
     background-color: rgb(0, 0, 0);
 }
@@ -51,7 +55,7 @@ html {
 }
 
 :is(.dark .dark\:border-gray-600) {
-    border-color: rgb(63, 63, 70) !important;
+    border-color: rgb(123, 63, 70) !important;
 }
 
 :is(.dark .dark\:bg-gray-700) {
@@ -111,6 +115,7 @@ input#username:focus-visible {
 .custom-navbar-active-light,
 .custom-navbar-active-dark {
     background-color: transparent;
+    padding: 0.5em 1em !important;
 }
 
 .custom-navbar-active-light,
@@ -121,13 +126,12 @@ input#username:focus-visible {
 
 .custom-navbar-light:hover {
     background-color: rgba(248, 248, 248, 1) !important;
-    color: rgba(192, 192, 192, 1);
+    color: rgba(0, 0, 0, 1) !important;
 }
 
 .custom-navbar-active-light {
-    background-color: rgba(240, 240, 240, 1) !important;
-    color: rgba(192, 192, 192, 1);
-
+    color: #34D399 !important;
+    border-color: #34D399 !important;
 }
 
 .custom-navbar-active-dark,
@@ -138,11 +142,10 @@ input#username:focus-visible {
 
 .custom-navbar-dark:hover {
     background-color: rgba(49, 49, 52, 1) !important;
-    color: #FFF;
+    color: #FFF !important;
 }
 
 .custom-navbar-active-dark {
-    background-color: rgba(59, 59, 62, 1);
-    color: #FFF;
-    border-bottom: 2px solid red;
+    color: #34D399 !important;
+    border-color: #34D399 !important;
 }

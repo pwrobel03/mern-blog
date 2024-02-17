@@ -41,7 +41,7 @@ const Header = () => {
             </form>
             <Button
                 outline
-                className='focus:ring-transparent shadow-none ring-0 w-12 h-10 lg:hidden p-0 bg-transparent dark:bg-transparent border-2 border-zinc-600 enabled:hover:bg-gray-500 dark:enabled:hover:bg-[rgba(0,0,0,0.2)] dark:focus:ring-0 rounded-lg'>
+                className='focus:ring-transparent shadow-none ring-0 w-12 h-10 lg:hidden p-0 bg-transparent dark:bg-transparent border-2 border-[rgb(128,128,128)] enabled:hover:bg-gray-500 dark:enabled:hover:bg-[rgba(0,0,0,0.2)] dark:focus:ring-0 rounded-lg'>
                 <AiOutlineSearch />
             </Button>
             <div className='flex gap-2 md:order-2 items-center'>
@@ -64,7 +64,7 @@ const Header = () => {
                                 src={currentUser.profilePicture}
                             />
                         }
-                        className="dark:bg-zinc-700"
+                        className="dark:bg-[rgb(128,128,128)]"
                     >
                         <Dropdown.Header>
                             <span className='block text-sm italic'>@{currentUser.username}</span>
@@ -84,7 +84,7 @@ const Header = () => {
                         </Button>
                     </Link>
                 }
-                <Navbar.Toggle className='text-gray-500 focus:ring-0 dark:text-zinc-600 dark:hover:bg-zinc-900 dark:focus:ring-0'></Navbar.Toggle>
+                <Navbar.Toggle className='text-gray-500 focus:ring-0 dark:text-[rgb(128,128,128)] dark:hover:bg-zinc-900 dark:focus:ring-0'></Navbar.Toggle>
             </div>
             <Navbar.Collapse className='font-bold'>
                 <Navbar.Link active={path === "/"} as={"div"} className={(path === "/" ? theme === "light" ? "custom-navbar-active-light" : "custom-navbar-active-dark" : theme === "light" ? "custom-navbar-light" : "custom-navbar-dark")} >
@@ -94,7 +94,7 @@ const Header = () => {
                     <Link to="/about">About</Link>
                 </Navbar.Link>
                 <Navbar.Link active={path === "/projects"} as={"div"} className={(path === "/projects" ? theme === "light" ? "custom-navbar-active-light" : "custom-navbar-active-dark" : theme === "light" ? "custom-navbar-light" : "custom-navbar-dark")} >
-                    <Link to="/projects">About</Link>
+                    <Link to="/projects">Projects</Link>
                 </Navbar.Link>
 
                 {/* <Navbar.Link active={path === "/home"} as={"div"} className='active:bg-red-900  hover:bg-neutral-50 bg-transparent border-neutral-100 text-neutral-400 dark:bg-zinc-800 border-b-2 dark:border-zinc-700' >

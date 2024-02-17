@@ -2,6 +2,7 @@ import React, { useState, useEffect } from 'react'
 import { useLocation } from 'react-router-dom'
 import DashSideBar from '../components/DashSideBar';
 import DashProfile from '../components/DashProfile';
+import Test from '../components/Test';
 
 const Dashboard = () => {
     const location = useLocation();
@@ -18,15 +19,19 @@ const Dashboard = () => {
 
 
     return (
-        <div className='flex flex-1 flex-col  md:flex-row'>
+        <div className='min-h-screen relative flex flex-col  md:flex-row'>
             {/* Sidebar */}
-            <div className='md:min-w-56'>
+            <div className='flex md:min-w-[20vw]'>
                 <DashSideBar />
             </div>
             {/* Content area */}
             {/* Profile */}
-            {tab === "profile" && <DashProfile />}
-        </div>
+            <div className='overflow-hidden relative w-full flex-col flex items-center justify-center'>
+                {tab === "profile" &&
+                    <Test />
+                }
+            </div>
+        </div >
     )
 }
 
