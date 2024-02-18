@@ -1,11 +1,15 @@
 import React, { useEffect, useRef, useState } from 'react'
-import { TextInput, Label, Button, Spinner } from 'flowbite-react'
+import { TextInput, Label, Button, Spinner, Alert } from 'flowbite-react'
 import { useSelector } from 'react-redux'
+import { CircularProgressbar } from 'react-circular-progressbar';
+import 'react-circular-progressbar/dist/styles.css';
 import { RiLockPasswordLine } from "react-icons/ri"
 import { CiUser } from "react-icons/ci"
 import { CiMail } from "react-icons/ci"
 import { FaArrowDown } from "react-icons/fa"
 import { useNavigate } from 'react-router-dom'
+import { getStorage, uploadBytesResumable, ref, getDownloadURL } from "firebase/storage"
+import { app } from "../firebase"
 
 const Test = () => {
     const navigate = useNavigate();
@@ -14,6 +18,8 @@ const Test = () => {
     const [loading, setLoading] = useState();
     const [imageProfile, setImageProfile] = useState();
     const [imageProfileUrl, setImageProfileUrl] = useState();
+    const [imageFileUpdateProgress, setImageFileUpdateProgress] = useState(null)
+    const [imageFileUpdateError, setImageFileUpdateError] = useState(null)
     const [httpRequest, setHttpRequest] = useState();
     const [userData, setUserData] = useState({
         username: currentUser.username,
@@ -50,14 +56,53 @@ const Test = () => {
         const image = event.target.files[0]
         console.log(image);
         if (!image) {
-            console.log("return");
             return
         }
 
-        const imageUrl = URL.createObjectURL(image);
-        setImageProfileUrl(imageUrl)
-        console.log(imageUrl);
+
+        setImageProfile(image)
+        setImageProfileUrl(URL.createObjectURL(image));
     }
+
+    useEffect(() => {
+        if (imageProfile) {
+            uploadImage()
+        }
+    }, [imageProfile])
+
+    const uploadImage = async () => {
+        // clear
+        setImageFileUpdateProgress(null)
+        setImageFileUpdateError(null)
+
+        const storage = getStorage(app)
+        const fileName = new Date().getTime() + imageProfile.name
+        const storageRef = ref(storage, fileName)
+        const uploadTask = uploadBytesResumable(storageRef, imageProfile);
+        uploadTask.on(
+            'state_changed',
+            (snapshot) => {
+                const progress = (snapshot.bytesTransferred / snapshot.totalBytes) * 100;
+                setImageFileUpdateProgress(progress.toFixed(0))
+                console.warn(progress);
+            },
+            (error) => {
+                setImageFileUpdateError("Could not update a file (File must be less than 2MB) Please choose another image.")
+                setImageFileUpdateProgress(null)
+                setImageProfileUrl(null)
+                // setTimeout(() => {
+                //     setImageFileUpdateError(null)
+                // }, 5000)
+            }, () => {
+                getDownloadURL(uploadTask.snapshot.ref).then((downloadUrl) => {
+                    setImageProfileUrl(downloadUrl)
+                })
+                setImageFileUpdateError(null)
+                setImageFileUpdateProgress(null)
+            }
+        )
+    }
+
 
     return (
         <>
@@ -81,12 +126,40 @@ const Test = () => {
                                 className='absolute'
                                 ref={filePickerRef} />
                         </form>
-                        <img
-                            onClick={() => filePickerRef.current.click()}
-                            className=' p-1 dark:bg-[rgb(39,39,42)] bg-white translate-y-[-50%] rounded-full h-[50%] aspect-square'
-                            src={imageProfileUrl || currentUser.profilePicture}
-                            alt="profile picture"
-                        />
+                        <div className='relative translate-y-[-50%] rounded-full h-[50%] aspect-square'>
+                            {imageFileUpdateProgress &&
+                                <CircularProgressbar
+                                    value={imageFileUpdateProgress || null}
+                                    text={`${imageFileUpdateProgress}%`}
+                                    strokeWidth={5}
+                                    styles={{
+                                        root: {
+                                            width: '100%',
+                                            height: '100%',
+                                            position: 'absolute',
+                                            zIndex: 2
+                                        }, path: {
+                                            stroke: `#059669`,
+                                        },
+                                        text: {
+                                            // Text color
+                                            fill: '#fff',
+                                            fontSize: '2em',
+                                        }, trail: {
+                                            // Trail color
+                                            stroke: 'transparent',
+                                        }
+                                    }}
+                                />
+                            }
+                            <img
+                                onClick={() => filePickerRef.current.click()}
+                                className='p-1 md:p-2 xl:p-3 dark:bg-[rgb(39,39,42)] bg-white absolute top-0 left-0 h-full w-full rounded-full'
+                                src={imageProfileUrl || currentUser.profilePicture}
+                                alt="profile picture"
+
+                            />
+                        </div>
                         <p className='xs:translate-y-[-50%] text-lg sm:text-3xl text-center'><span className='font-semibold'>Hi chef!</span><br />Nice to see you, <span className='text-emerald-600 font-bold'>{currentUser.username}</span>  </p>
                         <div className='mt-3 p-2 flex items-center gap-2 justify-center'>
                             <p className='text-xs sm:text-xl text-center'>Here you can change your profile details </p>
@@ -96,7 +169,12 @@ const Test = () => {
                         </div>
                     </div>
                     <div id="editData" className='max-h-[600px] sm:mt-[calc(25%+4em)] mt-[calc(25%+6em)] aspect-video w-full'>
-                        <form className='flex flex-col gap-4 text-xl' onSubmit={submitHandler}>
+                        {imageFileUpdateError &&
+                            <Alert color='failure'>
+                                {imageFileUpdateError}
+                            </Alert>
+                        }
+                        <form className='flex flex-col mt-4 gap-4 text-xl' onSubmit={submitHandler}>
                             <div>
                                 <Label value='Your username'></Label>
                                 <TextInput
