@@ -1,6 +1,6 @@
 import React, { useEffect, useRef, useState } from 'react'
 import { TextInput, Label, Button, Spinner, Alert } from 'flowbite-react'
-import { useSelector } from 'react-redux'
+import { useDispatch, useSelector } from 'react-redux'
 import { CircularProgressbar } from 'react-circular-progressbar';
 import 'react-circular-progressbar/dist/styles.css';
 import { RiLockPasswordLine } from "react-icons/ri"
@@ -10,16 +10,22 @@ import { FaArrowDown } from "react-icons/fa"
 import { useNavigate } from 'react-router-dom'
 import { getStorage, uploadBytesResumable, ref, getDownloadURL } from "firebase/storage"
 import { app } from "../firebase"
+import { updateStart, updateSuccess, updateFailure } from '../redux/user/userSlice';
 
 const Test = () => {
+    const dispatch = useDispatch();
     const navigate = useNavigate();
     const { currentUser } = useSelector((state) => state.user);
     const filePickerRef = useRef();
     const [loading, setLoading] = useState();
     const [imageProfile, setImageProfile] = useState();
     const [imageProfileUrl, setImageProfileUrl] = useState();
-    const [imageFileUpdateProgress, setImageFileUpdateProgress] = useState(null)
-    const [imageFileUpdateError, setImageFileUpdateError] = useState(null)
+    const [imageFileUpdateProgress, setImageFileUpdateProgress] = useState(null);
+    const [imageFileUpdateError, setImageFileUpdateError] = useState(null);
+    const [formData, setFormData] = useState({});
+    const [updateUserError, setUpdateUserError] = useState();
+    const [updateUserSuccess, setUpdateUserSuccess] = useState();
+
     const [httpRequest, setHttpRequest] = useState();
     const [userData, setUserData] = useState({
         username: currentUser.username,
@@ -34,21 +40,47 @@ const Test = () => {
 
     const inputChangeHandler = (event) => {
         setUserData({ ...userData, [event.target.id]: event.target.value })
-        console.log(userData);
+        setFormData({ ...formData, [event.target.id]: event.target.value })
     }
 
     const submitHandler = async (event) => {
         event.preventDefault()
-        // const res = await fetch("/api/auth/signup", {
-        //     method: "POST",
-        //     headers: { "Content-type": "application/json" },
-        //     body: JSON.stringify(formData)
-        // });
-        // console.log(res);
-
-        // if (res) {
-
-        // }
+        console.log(currentUser);
+        setUpdateUserError(null);
+        setUpdateUserSuccess(null);
+        if (Object.keys(formData).length === 0) {
+            setUpdateUserError('No changes made');
+            return;
+        }
+        if (imageFileUpdateProgress) {
+            setUpdateUserError('Please wait for image to upload');
+            return;
+        }
+        try {
+            dispatch(updateStart());
+            console.log(currentUser._id);
+            console.log(formData);
+            const res = await fetch(`/api/user/update/${currentUser._id}`, {
+                method: 'PUT',
+                headers: {
+                    'Content-Type': 'application/json',
+                },
+                body: JSON.stringify(formData),
+            });
+            console.log(res);
+            const data = await res.json();
+            if (!res.ok) {
+                dispatch(updateFailure(data.message));
+                setUpdateUserError(data.message);
+            } else {
+                dispatch(updateSuccess(data));
+                setUpdateUserSuccess("User's profile updated successfully");
+            }
+        } catch (error) {
+            console.log("UUUUUUU");
+            dispatch(updateFailure(error.message));
+            setUpdateUserError(error.message);
+        }
     }
 
     const changeImageHandler = (event) => {
@@ -96,9 +128,11 @@ const Test = () => {
             }, () => {
                 getDownloadURL(uploadTask.snapshot.ref).then((downloadUrl) => {
                     setImageProfileUrl(downloadUrl)
+                    setFormData({ ...formData, profilePicture: downloadUrl })
+                }).then(() => {
+                    setImageFileUpdateError(null)
+                    setImageFileUpdateProgress(null)
                 })
-                setImageFileUpdateError(null)
-                setImageFileUpdateProgress(null)
             }
         )
     }
@@ -120,6 +154,7 @@ const Test = () => {
                         <form hidden>
                             <input
                                 type="file"
+                                name='profilePicture'
                                 accept='image/*'
                                 onChange={changeImageHandler}
                                 defaultValue={imageProfile}
@@ -191,6 +226,7 @@ const Test = () => {
                                     type='email'
                                     placeholder='name@company.com'
                                     id='email'
+                                    name="email"
                                     onChange={inputChangeHandler}
                                     defaultValue={userData.email}>
                                 </TextInput>
@@ -218,6 +254,16 @@ const Test = () => {
                                     : "Update"
                                 }
                             </Button>
+                            {updateUserError &&
+                                <Alert color='failure'>
+                                    {updateUserError}
+                                </Alert>
+                            }
+                            {updateUserSuccess &&
+                                <Alert color='success'>
+                                    {updateUserSuccess}
+                                </Alert>
+                            }
                         </form>
                     </div>
                 </div>
