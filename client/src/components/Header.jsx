@@ -64,7 +64,7 @@ const Header = () => {
                                 src={currentUser.profilePicture}
                             />
                         }
-                        className="dark:bg-[rgb(128,128,128)]"
+                        className="dark:bg-gray-700 dark:border-2 dark:border-pink-200"
                     >
                         <Dropdown.Header>
                             <span className='block text-sm italic'>@{currentUser.username}</span>

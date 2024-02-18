@@ -2,7 +2,6 @@ import React, { useState, useEffect } from 'react'
 import { useLocation } from 'react-router-dom'
 import DashSideBar from '../components/DashSideBar';
 import DashProfile from '../components/DashProfile';
-import Test from '../components/Test';
 
 const Dashboard = () => {
     const location = useLocation();
@@ -28,7 +27,7 @@ const Dashboard = () => {
             {/* Profile */}
             <div className='overflow-hidden relative w-full flex-col flex items-center justify-center'>
                 {tab === "profile" &&
-                    <Test />
+                    <DashProfile />
                 }
             </div>
         </div >
