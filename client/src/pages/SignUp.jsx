@@ -2,6 +2,9 @@ import React, { useState } from 'react'
 import { Link, useNavigate } from 'react-router-dom'
 import { Label, TextInput, Button, Toast, Alert, Spinner } from 'flowbite-react'
 import OAuth from '../components/OAuth';
+import { RiLockPasswordLine } from "react-icons/ri"
+import { CiUser } from "react-icons/ci"
+import { CiMail } from "react-icons/ci"
 
 const SignUp = () => {
   const [formData, setFormData] = useState({
@@ -69,6 +72,7 @@ const SignUp = () => {
             <div>
               <Label value='Your username'></Label>
               <TextInput
+                icon={CiUser}
                 type='text'
                 placeholder='Username'
                 id='username'
@@ -78,6 +82,7 @@ const SignUp = () => {
             <div>
               <Label value='Your Email'></Label>
               <TextInput
+                icon={CiMail}
                 type='email'
                 placeholder='name@company.com'
                 id='email'
@@ -87,6 +92,7 @@ const SignUp = () => {
             <div>
               <Label value='Your password'></Label>
               <TextInput
+                icon={RiLockPasswordLine}
                 type='password'
                 placeholder='Password'
                 id='password'
@@ -112,7 +118,7 @@ const SignUp = () => {
             <span >Have an account?</span>
             <Link
               to={"/sign-in"}
-              className='text-md font-bold text-emerald-600 dark:text-white'>
+              className='text-md font-bold text-emerald-500 '>
               Sign In
             </Link>
           </div>

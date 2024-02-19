@@ -19,8 +19,8 @@ const DashSideBar = () => {
 
     return (
         <Sidebar className='w-full'>
-            <Sidebar.Items>
-                <Sidebar.ItemGroup>
+            <Sidebar.Items >
+                <Sidebar.ItemGroup >
                     <Sidebar.Item
                         active={tab === "profile"}
                         icon={HiUser}

@@ -4,6 +4,8 @@ import { Label, TextInput, Button, Toast, Alert, Spinner } from 'flowbite-react'
 import { signInStart, signInSuccess, signInFailure, clearError } from '../redux/user/userSlice'
 import { useDispatch, useSelector } from 'react-redux'
 import OAuth from '../components/OAuth'
+import { RiLockPasswordLine } from "react-icons/ri"
+import { CiMail } from "react-icons/ci"
 
 
 const SignIn = () => {
@@ -75,6 +77,7 @@ const SignIn = () => {
                         <div>
                             <Label value='Your email'></Label>
                             <TextInput
+                                icon={CiMail}
                                 type='email'
                                 placeholder='name@company.com'
                                 id='email'
@@ -84,6 +87,7 @@ const SignIn = () => {
                         <div>
                             <Label value='Your password'></Label>
                             <TextInput
+                                icon={RiLockPasswordLine}
                                 type='password'
                                 placeholder='***************'
                                 id='password'
@@ -109,7 +113,7 @@ const SignIn = () => {
                         <span >You don't have account yet?</span>
                         <Link
                             to={"/sign-up"}
-                            className='text-md font-bold text-emerald-600 dark:text-white'>
+                            className='text-md font-bold text-emerald-500'>
                             Sign Up
                         </Link>
                     </div>

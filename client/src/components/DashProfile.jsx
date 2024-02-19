@@ -45,13 +45,17 @@ const Test = () => {
 
     const submitHandler = async (event) => {
         event.preventDefault()
-        console.log(currentUser);
         setUpdateUserError(null);
         setUpdateUserSuccess(null);
+        if (imageFileUpdateError) {
+            return
+        }
+
         if (Object.keys(formData).length === 0) {
             setUpdateUserError('No changes made');
             return;
         }
+
         if (imageFileUpdateProgress) {
             setUpdateUserError('Please wait for image to upload');
             return;
@@ -75,6 +79,9 @@ const Test = () => {
             } else {
                 dispatch(updateSuccess(data));
                 setUpdateUserSuccess("User's profile updated successfully");
+                setTimeout(() => {
+                    setUpdateUserSuccess(null)
+                }, 3000);
             }
         } catch (error) {
             console.log("UUUUUUU");
@@ -142,7 +149,7 @@ const Test = () => {
         <>
             <div
                 style={{ backgroundImage: `url(${httpRequest})` }}
-                className='relative w-full max-h-[600px] min-h-[300px] aspect-video bg-cover bg-center '>
+                className='relative w-full 2xl:max-h-[1000px] max-h-[30vw] min-h-[300px] aspect-video bg-cover bg-center '>
 
             </div>
             <div className="relative flex flex-col items-center h-full">
@@ -150,7 +157,7 @@ const Test = () => {
                     <img className=' p-1 dark:bg-[rgb(39,39,42)] bg-white absolute translate-y-[-50%] translate-x-[-50%] left-[50%] rounded-full h-[25vw]' src={currentUser.profilePicture} alt="" srcset="" />
                 </div> */}
                 <div className='select-none md:w-[60vw] w-[90vw] max-w-[1200px] items-center mb-20 max-h-full flex flex-col'>
-                    <div className='px-4 pb-4 absolute top-0 backdrop-blur-lg translate-y-[-50%] max-h-[600px] flex flex-col items-center aspect-video w-full rounded-2xl dark:bg-[rgb(64,64,64)]/40 bg-[rgb(240,240,240)]/40 shadow-lg ring-1 ring-black/5'>
+                    <div className='px-4 pb-4 absolute top-0 backdrop-blur-lg translate-y-[-50%] 2xl:max-h-[400px] max-h-[30vw] flex flex-col items-center aspect-video w-full rounded-2xl dark:bg-[rgb(64,64,64)]/40 bg-[rgb(240,240,240)]/40 shadow-lg ring-1 ring-black/5'>
                         <form hidden>
                             <input
                                 type="file"
@@ -196,7 +203,7 @@ const Test = () => {
                             />
                         </div>
                         <p className='xs:translate-y-[-50%] text-lg sm:text-3xl text-center'><span className='font-semibold'>Hi chef!</span><br />Nice to see you, <span className='text-emerald-600 font-bold'>{currentUser.username}</span>  </p>
-                        <div className='mt-3 p-2 flex items-center gap-2 justify-center'>
+                        <div className='mt-3 p-2 flex items-center gap-2 justify-center flex-col xs:flex-row'>
                             <p className='text-xs sm:text-xl text-center'>Here you can change your profile details </p>
                             <a href="#editData">
                                 <FaArrowDown className=' hover:text-emerald-600 rounded-full'></FaArrowDown>
@@ -213,6 +220,7 @@ const Test = () => {
                             <div>
                                 <Label value='Your username'></Label>
                                 <TextInput
+                                    icon={CiUser}
                                     type='text'
                                     placeholder='username'
                                     id='username'
@@ -223,6 +231,7 @@ const Test = () => {
                             <div>
                                 <Label value='Your email'></Label>
                                 <TextInput
+                                    icon={CiMail}
                                     type='email'
                                     placeholder='name@company.com'
                                     id='email'
@@ -234,6 +243,7 @@ const Test = () => {
                             <div>
                                 <Label value='Your password'></Label>
                                 <TextInput
+                                    icon={RiLockPasswordLine}
                                     type='password'
                                     placeholder='***************'
                                     id='password'
@@ -242,7 +252,7 @@ const Test = () => {
                                 </TextInput>
                             </div>
                             <Button
-                                className='text-white mt-4 font-bold bg-gradient-to-r from-emerald-400 to-emerald-200 hover:bg-gradient-to-br focus:ring-4 focus:outline-none focus:ring-emerald-400 dark:focus:ring-green-800 px-2 py-1 text-center mb-2'
+                                className='text-white mt-4 font-bold bg-gradient-to-r from-emerald-400 to-emerald-200 hover:bg-gradient-to-br focus:ring-4 focus:outline-none focus:ring-emerald-400 dark:focus:ring-green-800 px-2 py-1 text-center'
                                 disabled={loading}
                                 type='submit'>
                                 {loading
@@ -254,6 +264,10 @@ const Test = () => {
                                     : "Update"
                                 }
                             </Button>
+                            <div className='text-red-500 py-2 text-sm uppercase flex flex-row justify-between'>
+                                <div>Delete Account</div>
+                                <div>Sign Out</div>
+                            </div>
                             {updateUserError &&
                                 <Alert color='failure'>
                                     {updateUserError}
