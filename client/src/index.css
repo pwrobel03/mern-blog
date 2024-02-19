@@ -54,10 +54,6 @@ html {
     color: rgba(192, 192, 192, 1) !important;
 }
 
-:is(.dark .dark\:border-gray-600) {
-    border-color: rgb(123, 63, 70) !important;
-}
-
 :is(.dark .dark\:bg-gray-700) {
     background-color: rgb(39, 39, 42) !important;
 }
@@ -92,20 +88,35 @@ input:-webkit-autofill {
 
 input#email,
 input#password,
-input#username {
+input#username,
+input#title,
+select#postCategory {
     border: 0px;
     outline: 0px;
 }
 
 input#email:focus,
 input#password:focus,
-input#username:focus {
-    box-shadow: 1px 1px 1px 1px rgba(255, 255, 255, 0.3);
+input#username:focus,
+input#title:focus,
+select#postCategory:focus {
+    box-shadow: 1px 1px 1px 1px rgba(0, 0, 0, 0.3);
 }
 
 input#email:focus-visible,
 input#password:focus-visible,
-input#username:focus-visible {
+input#username:focus-visible,
+input#title:focus-visible,
+select#postCategory:focus-visible {
+    outline: 0px !important;
+    border: rgba(1, 1, 1, 0);
+}
+
+input#email:hover,
+input#password:hover,
+input#username:hover,
+input#title,
+select#postCategory {
     outline: 0px !important;
     border: rgba(1, 1, 1, 0);
 }
@@ -148,4 +159,28 @@ input#username:focus-visible {
 .custom-navbar-active-dark {
     color: #34D399 !important;
     border-color: #34D399 !important;
+}
+
+/* CreatePost.jsx custom button */
+.customUploadImageButton:focus {
+    box-shadow: 0.2rem 0.2rem 0 rgba(0, 0, 0, 0.3) !important;
+    filter: brightness(90%);
+}
+
+.customUploadImageButton:hover {
+    filter: brightness(90%);
+    box-shadow: 0.2rem 0.2rem 0 rgba(0, 0, 0, 0.3) !important;
+}
+
+/* selektor .dark dla ciemnego motywu */
+.dark .customUploadImageButton:focus {
+    filter: brightness(90%);
+    box-shadow: 0.2rem 0.2rem 0 0 rgba(255, 255, 255, 0.3) !important;
+    /* zmieniony kolor cienia dla ciemnego motywu */
+}
+
+.dark .customUploadImageButton:hover {
+    filter: brightness(90%);
+    box-shadow: 0.2rem 0.2rem 0 0 rgba(255, 255, 255, 0.3) !important;
+    /* zmieniony kolor cienia dla ciemnego motywu */
 }
