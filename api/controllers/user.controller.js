@@ -32,7 +32,6 @@ export const updateUser = async (req, res, next) => {
             return next(errorHandler(400, 'Username must be lowercase'));
         }
 
-        console.log(req.body.username);
         if (!req.body.username.match(/^[^ !"`'#%&,:;<>=@{}~\$\(\)\*\+\/\\\?\[\]\^\|]+$/)) {
             console.log("uwasdasd");
             return next(
@@ -72,7 +71,6 @@ export const deleteUser = async (req, res, next) => {
 }
 
 export const signOut = async (req, res, next) => {
-    console.log("dzieje się");
     try {
         res.clearCookie('access_token').status(200).json("User has been signed out")
     } catch (error) {

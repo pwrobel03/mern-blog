@@ -59,6 +59,7 @@ export const signIn = async (req, res, next) => {
 
         const token = jwt.sign(
             { userId: validUser._id },
+            { isAdmin: validUser.isAdmin },
             process.env.JWT_SECRET_KEY
         )
 
@@ -76,18 +77,24 @@ export const google = async (req, res, next) => {
     const { email, name, googlePhotoUrl } = req.body
     try {
         const user = await User.findOne({ email })
+        console.log(user);
         // user exist
         if (user) {
             console.log("Login");
             const token = jwt.sign(
-                { userId: user._id },
+                {
+                    userId: user._id,
+                    isAdmin: user.isAdmin
+                },
                 process.env.JWT_SECRET_KEY
             )
 
             user.password = null
             res
                 .status(200)
-                .cookie("access_token", token, { httpOnly: true })
+                .cookie("access_token", token,
+                    { httpOnly: true }
+                )
                 .json(user)
         } else {
             console.log("Register");

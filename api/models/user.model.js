@@ -22,6 +22,10 @@ const userSchema = new mongoose.Schema(
         profilePicture: {
             type: String,
             default: () => `${BASE_URL}/api/assets/profile.png`
+        },
+        isAdmin: {
+            type: Boolean,
+            default: false
         }
     },
     {

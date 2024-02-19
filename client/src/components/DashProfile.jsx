@@ -46,11 +46,6 @@ const Test = () => {
     })
 
     useEffect(() => {
-        console.warn("asdasda");
-        console.log(currentUser);
-    })
-
-    useEffect(() => {
         console.log(currentUser);
         setHttpRequest("http://" + window.location.host + "/api/assets/lol.png")
         dispatch(deleteCancel())
@@ -61,6 +56,7 @@ const Test = () => {
         setFormData({ ...formData, [event.target.id]: event.target.value })
     }
 
+    // TODO: username password change doesn't work
     const submitHandler = async (event) => {
         event.preventDefault()
         setUpdateUserError(null);
