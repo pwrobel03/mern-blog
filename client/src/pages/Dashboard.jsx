@@ -20,7 +20,7 @@ const Dashboard = () => {
     return (
         <div className='min-h-screen relative flex flex-col  md:flex-row'>
             {/* Sidebar */}
-            <div className='flex md:min-w-[20vw]'>
+            <div className='flex md:w-[20vw] md:max-w-[260px]'>
                 <DashSideBar />
             </div>
             {/* Content area */}

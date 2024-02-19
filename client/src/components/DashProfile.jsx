@@ -7,7 +7,7 @@ import { RiLockPasswordLine } from "react-icons/ri"
 import { CiUser } from "react-icons/ci"
 import { CiMail } from "react-icons/ci"
 import { FaArrowDown } from "react-icons/fa"
-import { useNavigate } from 'react-router-dom'
+import { Link, useNavigate } from 'react-router-dom'
 import { getStorage, uploadBytesResumable, ref, getDownloadURL } from "firebase/storage"
 import { app } from "../firebase"
 import {
@@ -26,9 +26,8 @@ import { CiWarning } from "react-icons/ci";
 const Test = () => {
     const dispatch = useDispatch();
     const navigate = useNavigate();
-    const { currentUser, error } = useSelector((state) => state.user);
+    const { currentUser, error, loading } = useSelector((state) => state.user);
     const filePickerRef = useRef();
-    const [loading, setLoading] = useState();
     const [imageProfile, setImageProfile] = useState();
     const [imageProfileUrl, setImageProfileUrl] = useState();
     const [imageFileUpdateProgress, setImageFileUpdateProgress] = useState(null);
@@ -69,6 +68,8 @@ const Test = () => {
             setUpdateUserError('No changes made');
             return;
         }
+        console.log("formData");
+        console.log(formData);
 
         if (imageFileUpdateProgress) {
             setUpdateUserError('Please wait for image to upload');
@@ -91,6 +92,7 @@ const Test = () => {
                 dispatch(updateFailure(data.message));
                 setUpdateUserError(data.message);
             } else {
+                setFormData({})
                 dispatch(updateSuccess(data));
                 setUpdateUserSuccess("User's profile updated successfully");
                 setTimeout(() => {
@@ -259,7 +261,7 @@ const Test = () => {
                             </a>
                         </div>
                     </div>
-                    <div id="editData" className='max-h-[600px] sm:mt-[calc(25%+4em)] mt-[calc(25%+6em)] aspect-video w-full'>
+                    <div id="editData" className='max-h-[600px] xl:mt-[calc(25%)] sm:mt-[calc(25%+3em)] mt-[calc(25%+5em)] aspect-video w-full'>
                         {imageFileUpdateError &&
                             <Alert color='failure'>
                                 {imageFileUpdateError}
@@ -302,17 +304,26 @@ const Test = () => {
                             </div>
                             <Button
                                 className='text-white mt-4 font-bold bg-gradient-to-r from-emerald-400 to-emerald-200 hover:bg-gradient-to-br focus:ring-4 focus:outline-none focus:ring-emerald-400 dark:focus:ring-green-800 px-2 py-1 text-center'
-                                disabled={loading}
+                                disabled={loading || imageFileUpdateProgress}
                                 type='submit'>
-                                {loading
+                                {loading || imageFileUpdateProgress
                                     ? <><Spinner
                                         size="sm"
-                                        color={"emerald"}
-                                        className='mr-4' />
+                                        color={"white"}
+                                        className='mr-4 text-white dark:text-white' />
                                         <span>Loading...</span></>
                                     : "Update"
                                 }
                             </Button>
+                            {currentUser.isAdmin &&
+                                <Link className='w-full' to={"create-post"}>
+                                    <Button
+                                        className='w-full text-white mt-4 font-bold bg-gradient-to-r from-emerald-400 to-emerald-200 hover:bg-gradient-to-br focus:ring-4 focus:outline-none focus:ring-emerald-400 dark:focus:ring-green-800 px-2 py-1 text-center'
+                                    >
+                                        Create a post
+                                    </Button>
+                                </Link>
+                            }
                             <div className='text-red-500 py-2 text-sm uppercase flex flex-row justify-between'>
                                 <div
                                     className='hover:text-red-700 cursor-pointer hover:underline'

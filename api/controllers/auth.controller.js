@@ -51,15 +51,21 @@ export const signIn = async (req, res, next) => {
             return next(errorHandler(404, "Something goes wrong"))
         }
 
+
+
         const validPassword = bcryptjs.compareSync(password, validUser.password)
         if (!validPassword) {
             return next(errorHandler(400, "Something goes wrong"))
         }
         validUser.password = null
 
+        console.log("Loguj się");
+
         const token = jwt.sign(
-            { userId: validUser._id },
-            { isAdmin: validUser.isAdmin },
+            {
+                userId: validUser._id,
+                isAdmin: validUser.isAdmin
+            },
             process.env.JWT_SECRET_KEY
         )
 
