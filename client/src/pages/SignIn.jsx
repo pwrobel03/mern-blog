@@ -121,7 +121,7 @@ const SignIn = () => {
                         ? <Alert color="failure" className='mt-5 font-bold text-base'>
                             {errorMessage}
                         </Alert>
-                        : <Alert color="failure" className='mt-5 font-bold font-bold text-base opacity-0'>
+                        : <Alert color="failure" className='mt-5 font-bold text-base opacity-0'>
                             "Please fill out all fields"
                         </Alert>
                     }

@@ -4,6 +4,7 @@ import { AiOutlineSearch } from "react-icons/ai"
 import { FaMoon, FaSun } from "react-icons/fa"
 import { Link, useLocation } from 'react-router-dom'
 import { useDispatch, useSelector } from 'react-redux'
+import { signOutSuccess } from '../redux/user/userSlice'
 import { toggleTheme } from "../redux/theme/themeSlice"
 
 const Header = () => {
@@ -13,13 +14,29 @@ const Header = () => {
     const { theme } = useSelector((state) => state.theme)
 
     const changeTheme = () => {
-        console.warn("dziwy");
         dispatch(toggleTheme())
     }
 
     useEffect(() => {
-        console.log("Leci navbar");
+        console.info("Navbar monitor changes of path and theme ------------> Header.jsx: line 21");
     }, [path, theme])
+
+    const handleSignOut = async () => {
+        try {
+            const result = await fetch('/api/user/signout', {
+                method: "POST",
+            })
+            const data = await result.json()
+            if (!data) {
+                console.log("SignOut error" + data.message);
+            } else {
+                dispatch(signOutSuccess())
+            }
+
+        } catch (error) {
+            console.log("SignOut error" + error.message);
+        }
+    }
 
     return (
         <Navbar className='border-b-2 dark:border-zinc-700 shadow-sm dark:shadow-zinc-600 py-4 items-center dark:bg-zinc-800'>
@@ -75,7 +92,9 @@ const Header = () => {
                         </Link>
                         <Dropdown.Divider />
                         <Link to={"/dashboard?tab=profile"}>
-                            <Dropdown.Item className='dark:text-red-500 dark:hover:text-red-400 dark:hover:focus:text-red-400 text-red-500 font-semibold dark:hover:bg-[rgba(0,0,0,0.3)] dark:focus:bg-[rgba(0,0,0,0.3)]'>Sign Out</Dropdown.Item>
+                            <Dropdown.Item
+                                onClick={handleSignOut}
+                                className='dark:text-red-500 dark:hover:text-red-400 dark:hover:focus:text-red-400 text-red-500 font-semibold dark:hover:bg-[rgba(0,0,0,0.3)] dark:focus:bg-[rgba(0,0,0,0.3)]'>Sign Out</Dropdown.Item>
                         </Link>
                     </Dropdown>
                     : <Link to="/sign-in">

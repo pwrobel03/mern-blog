@@ -17,7 +17,8 @@ import {
     deleteStart,
     deleteSuccess,
     deleteFailure,
-    deleteCancel
+    deleteCancel,
+    signOutSuccess
 } from '../redux/user/userSlice';
 import { CiWarning } from "react-icons/ci";
 
@@ -180,6 +181,22 @@ const Test = () => {
         }
     }
 
+    const handleSignOut = async () => {
+        try {
+            const result = await fetch('/api/user/signout', {
+                method: "POST",
+            })
+            const data = await result.json()
+            if (!data) {
+                console.log("SignOut error" + data.message);
+            } else {
+                dispatch(signOutSuccess())
+            }
+
+        } catch (error) {
+            console.log("SignOut error" + error.message);
+        }
+    }
 
     return (
         <>
@@ -306,7 +323,11 @@ const Test = () => {
                                     onClick={() => { setShowModal(true) }}>
                                     Delete Account
                                 </div>
-                                <div className='hover:text-red-700 cursor-pointer hover:underline'>Sign Out</div>
+                                <div
+                                    className='hover:text-red-700 cursor-pointer hover:underline'
+                                    onClick={handleSignOut}>
+                                    Sign Out
+                                </div>
                             </div>
                             {updateUserError &&
                                 <Alert color='failure'>
