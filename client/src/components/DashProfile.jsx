@@ -1,5 +1,5 @@
 import React, { useEffect, useRef, useState } from 'react'
-import { TextInput, Label, Button, Spinner, Alert } from 'flowbite-react'
+import { TextInput, Label, Button, Spinner, Alert, Modal } from 'flowbite-react'
 import { useDispatch, useSelector } from 'react-redux'
 import { CircularProgressbar } from 'react-circular-progressbar';
 import 'react-circular-progressbar/dist/styles.css';
@@ -10,12 +10,22 @@ import { FaArrowDown } from "react-icons/fa"
 import { useNavigate } from 'react-router-dom'
 import { getStorage, uploadBytesResumable, ref, getDownloadURL } from "firebase/storage"
 import { app } from "../firebase"
-import { updateStart, updateSuccess, updateFailure } from '../redux/user/userSlice';
+import {
+    updateStart,
+    updateSuccess,
+    updateFailure,
+    deleteStart,
+    deleteSuccess,
+    deleteFailure,
+    deleteCancel
+} from '../redux/user/userSlice';
+import { CiWarning } from "react-icons/ci";
+
 
 const Test = () => {
     const dispatch = useDispatch();
     const navigate = useNavigate();
-    const { currentUser } = useSelector((state) => state.user);
+    const { currentUser, error } = useSelector((state) => state.user);
     const filePickerRef = useRef();
     const [loading, setLoading] = useState();
     const [imageProfile, setImageProfile] = useState();
@@ -25,6 +35,7 @@ const Test = () => {
     const [formData, setFormData] = useState({});
     const [updateUserError, setUpdateUserError] = useState();
     const [updateUserSuccess, setUpdateUserSuccess] = useState();
+    const [showModal, setShowModal] = useState(false);
 
     const [httpRequest, setHttpRequest] = useState();
     const [userData, setUserData] = useState({
@@ -34,8 +45,14 @@ const Test = () => {
     })
 
     useEffect(() => {
+        console.warn("asdasda");
+        console.log(currentUser);
+    })
+
+    useEffect(() => {
         console.log(currentUser);
         setHttpRequest("http://" + window.location.host + "/api/assets/lol.png")
+        dispatch(deleteCancel())
     }, [])
 
     const inputChangeHandler = (event) => {
@@ -142,6 +159,25 @@ const Test = () => {
                 })
             }
         )
+    }
+
+    const deleteUserHandler = async () => {
+        setShowModal(false)
+        try {
+            dispatch(deleteStart())
+            const result = await fetch(`/api/user/delete/${currentUser._id}`, {
+                method: "DELETE",
+            })
+            const data = await result.json()
+            if (!data.ok) {
+                dispatch(deleteFailure(data.message))
+            } else {
+                dispatch(deleteSuccess(data))
+            }
+
+        } catch (error) {
+            dispatch(deleteFailure(error.message))
+        }
     }
 
 
@@ -265,8 +301,12 @@ const Test = () => {
                                 }
                             </Button>
                             <div className='text-red-500 py-2 text-sm uppercase flex flex-row justify-between'>
-                                <div>Delete Account</div>
-                                <div>Sign Out</div>
+                                <div
+                                    className='hover:text-red-700 cursor-pointer hover:underline'
+                                    onClick={() => { setShowModal(true) }}>
+                                    Delete Account
+                                </div>
+                                <div className='hover:text-red-700 cursor-pointer hover:underline'>Sign Out</div>
                             </div>
                             {updateUserError &&
                                 <Alert color='failure'>
@@ -278,10 +318,45 @@ const Test = () => {
                                     {updateUserSuccess}
                                 </Alert>
                             }
+                            {error &&
+                                <Alert color='failure'>
+                                    {error}
+                                </Alert>
+                            }
                         </form>
                     </div>
                 </div>
             </div >
+
+            <Modal
+                show={showModal}
+                onClose={() => setShowModal(false)}
+                popup
+                size="md"
+                className=''>
+                <Modal.Header className='bg-zinc-200' />
+                <Modal.Body className='flex flex-col dark:bg-zinc-900 bg-zinc-200'>
+                    <div className='text-center'>
+                        <CiWarning className='w-64 h-64 text-zinc-400 dark:text-zinc-700 mb-4 mx-auto' />
+                    </div>
+                    <h3 className='text-center font-semibold text-lg text-zinc-500'>Are you sure you want to delete your account?</h3>
+                    <div className='flex px-6 mt-4 flex-row justify-between'>
+                        <Button
+                            color='failure'
+                            onClick={deleteUserHandler}>
+                            Yes, I'm sure
+                        </Button>
+                        <Button
+                            color='dark'
+                            onClick={() => {
+                                setShowModal(false)
+                                dispatch(deleteCancel())
+                            }}>
+                            No, cancel
+                        </Button>
+                    </div>
+                </Modal.Body>
+            </Modal>
         </ >
     )
 }

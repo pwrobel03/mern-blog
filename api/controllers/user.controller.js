@@ -58,13 +58,14 @@ export const updateUser = async (req, res, next) => {
 }
 
 export const deleteUser = async (req, res, next) => {
+    console.log("wszedł");
     if (req.user.userId !== req.params.userId) {
         next(errorHandler(403, "You are not allowed to delete this user"))
     }
 
     try {
         await User.findByIdAndDelete(req.params.userId)
-        res.send(200, "You're account has been deleted")
+        res.status(200).json("You're account has been deleted")
     } catch (error) {
         next(error)
     }
