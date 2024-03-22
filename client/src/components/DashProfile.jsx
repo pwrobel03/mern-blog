@@ -130,6 +130,7 @@ const Test = () => {
         setImageFileUpdateProgress(null)
         setImageFileUpdateError(null)
 
+        // store provided image in database (firebase)
         const storage = getStorage(app)
         const fileName = new Date().getTime() + imageProfile.name
         const storageRef = ref(storage, fileName)
