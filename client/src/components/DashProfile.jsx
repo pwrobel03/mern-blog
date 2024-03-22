@@ -316,7 +316,7 @@ const Test = () => {
                                 }
                             </Button>
                             {currentUser.isAdmin &&
-                                <Link className='w-full' to={"create-post"}>
+                                <Link className='w-full' to={"/create-post"}>
                                     <Button
                                         className='w-full text-white mt-4 font-bold bg-gradient-to-r from-emerald-400 to-emerald-200 hover:bg-gradient-to-br focus:ring-4 focus:outline-none focus:ring-emerald-400 dark:focus:ring-green-800 px-2 py-1 text-center'
                                     >

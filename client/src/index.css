@@ -6,6 +6,32 @@
     font-size: 1.05rem;
 }
 
+.dark .ql-toolbar {
+    background-color: #27272A;
+    color: #EEE;
+}
+
+.ql-toolbar {
+    background-color: rgba(240, 240, 240, 1);
+}
+
+.dark .ql-editor.ql-blank::before {
+    color: #888 !important;
+}
+
+.ql-snow .ql-stroke {
+    stroke: #AAA;
+}
+
+.ql-snow .ql-picker {
+    color: #AAA;
+}
+
+.ql-snow .ql-fill,
+.ql-snow .ql-stroke.ql-fill {
+    fill: #AAA;
+}
+
 * {
     box-sizing: border-box;
 }
@@ -14,6 +40,9 @@ html {
     background-color: rgb(0, 0, 0);
 }
 
+input {
+    border: none !important;
+}
 
 .post-content p {
     margin-bottom: 0.5rem;
@@ -172,7 +201,7 @@ select#postCategory {
     box-shadow: 0.2rem 0.2rem 0 rgba(0, 0, 0, 0.3) !important;
 }
 
-/* selektor .dark dla ciemnego motywu */
+
 .dark .customUploadImageButton:focus {
     filter: brightness(90%);
     box-shadow: 0.2rem 0.2rem 0 0 rgba(255, 255, 255, 0.3) !important;
@@ -184,3 +213,5 @@ select#postCategory {
     box-shadow: 0.2rem 0.2rem 0 0 rgba(255, 255, 255, 0.3) !important;
     /* zmieniony kolor cienia dla ciemnego motywu */
 }
+
+/*  */
