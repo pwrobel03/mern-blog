@@ -2,6 +2,7 @@ import Post from "../models/post.model.js";
 import { errorHandler } from "./utils/error.js"
 
 export const createPost = async (req, res, next) => {
+
     // user is admin
     if (!req.user.isAdmin) {
         return next(errorHandler(403, "You're not allowed to create a post!"))
@@ -17,7 +18,6 @@ export const createPost = async (req, res, next) => {
     const newPost = new Post({
         ...req.body, slug, userId: req.user.userId
     })
-
     // post was saved in database
     try {
         const savedPost = await newPost.save();

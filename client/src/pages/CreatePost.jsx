@@ -1,6 +1,7 @@
 import { Alert, Button, FileInput, Select, TextInput } from 'flowbite-react'
-import React, { useState } from 'react'
+import React, { useEffect, useState } from 'react'
 import { useDispatch } from 'react-redux'
+import { useNavigate } from "react-router-dom";
 import { CircularProgressbar } from 'react-circular-progressbar'
 import "react-circular-progressbar/dist/styles.css"
 import {
@@ -17,33 +18,50 @@ import 'react-quill/dist/quill.snow.css';
 
 const CreatePost = () => {
     // const dispatch = useDispatch();
+    const navigate = useNavigate()
     const [file, setFile] = useState(null);
     const [imageUploadProgress, setImageUploadProgress] = useState(null);
     const [imageUploadError, setImageUploadError] = useState(null);
     const [formData, setFormData] = useState({});
+    const [publishError, setPublishError] = useState();
     const submitHandler = async (event) => {
         event.preventDefault()
+        setPublishError(null)
+        // if (!formData.title) {
+        //     console.log("Łapie");
+        //     setPublishError("Provide title for your article")
+        //     return
+        // }
+
+
 
         try {
-            // image provided
-            if (!file) {
-                return
+            const res = await fetch('/api/post/create-post', {
+                method: 'POST',
+                headers: {
+                    'Content-Type': 'application/json',
+                },
+                body: JSON.stringify(formData),
+            });
+            const data = await res.json();
+            console.log(data);
+            if (!res.ok) {
+                setPublishError(data.message);
+                return;
             }
+            console.log("wdraża");
 
-            // content provided
-            if (!value) {
-                return
-            }
-
-
+            setPublishError(null);
+            navigate(`/post/${data.slug}`);
         } catch (error) {
-
+            setPublishError('Something went alone');
         }
 
     }
 
     const handleUploadImage = async () => {
         try {
+            // image provided
             if (!file) {
                 setImageUploadError('Please select an image');
                 return;
@@ -79,7 +97,6 @@ const CreatePost = () => {
         }
     };
 
-    const [content, setContent] = useState('');
     return (
         <div className='p-3 px-6 max-w-3xl w-full mx-auto min-h-screen'>
             <h1 className='text-center text-3xl my-7 font-semibold'>Create a post</h1>
@@ -91,11 +108,14 @@ const CreatePost = () => {
                         className='w-full'
                         type='text'
                         placeholder="Title"
+                        onChange={(e) => setFormData({ ...formData, title: e.target.value })}
                         name='title'
                         id='title'
                         required
                     />
-                    <Select id='postCategory'>
+                    <Select
+                        id='postCategory'
+                        onChange={(e) => setFormData({ ...formData, category: e.target.value })}>
                         <option value={"uncategorized"}>Select a category</option>
                         <option value={"javascript"}>Javascript</option>
                         <option value={"reactjs"}>React.js</option>
@@ -152,17 +172,26 @@ const CreatePost = () => {
                     <img
                         src={formData.image}
                         alt='upload image'
-                        className='w-full max-h-96 bg-auto object-cover'
+                        className='w-full max-h-64 md:max-h-96 bg-auto object-cover'
                     />
                 }
                 <ReactQuill
                     theme="snow"
-                    value={content}
-                    onChange={setContent}
+                    value={formData.content}
+                    onChange={(value) => setFormData({ ...formData, content: value })}
                     placeholder='Write something'
+                    required
                     color="red"
                     className='h-80 mb-12 dark:text-white' />
-                <Button color='emerald' className='text-white customUploadImageButton dark:customUploadImageButtonDark bg-gradient-to-r from-emerald-400 to-emerald-200 dark:bg-gradient-to-r'>Publish</Button>
+                <Button
+                    type='submit'
+                    color='emerald'
+                    className='text-white customUploadImageButton dark:customUploadImageButtonDark bg-gradient-to-r from-emerald-400 to-emerald-200 dark:bg-gradient-to-r'>Publish</Button>
+                {publishError && (
+                    <Alert color='failure'>
+                        {publishError}
+                    </Alert>
+                )}
             </form>
         </div>
     )
