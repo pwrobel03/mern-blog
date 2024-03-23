@@ -1,12 +1,14 @@
 import React, { useEffect, useState } from 'react'
 import { useLocation, useNavigate } from 'react-router-dom'
-import { HiUser, HiArrowSmRight } from "react-icons/hi"
+import { HiUser, HiArrowSmRight, HiDocumentText } from "react-icons/hi"
 import { Sidebar } from 'flowbite-react'
 import { useDispatch } from 'react-redux'
+import { useSelector } from 'react-redux'
 import { signOutSuccess } from '../redux/user/userSlice'
 
 const DashSideBar = () => {
     const dispatch = useDispatch()
+    const { currentUser } = useSelector(state => state.user)
     const navigate = useNavigate();
     const location = useLocation();
     const [tab, setTab] = useState('');
@@ -36,19 +38,31 @@ const DashSideBar = () => {
             console.log("SignOut error" + error.message);
         }
     }
+    useEffect(() => {
+        console.log(tab);
+    })
     return (
         <Sidebar className='w-full'>
-            <Sidebar.Items >
-                <Sidebar.ItemGroup >
+            <Sidebar.Items className='custom-dashboard-sidebar' >
+                <Sidebar.ItemGroup className=''>
                     <Sidebar.Item
                         active={tab === "profile"}
                         icon={HiUser}
-                        label="User"
+                        label={currentUser.isAdmin ? "Admin" : "User"}
                         labelColor="green"
                         onClick={() => navigate("/dashboard?tab=profile")}
-                        className="dark:hover:bg-emerald-400 dark:hover:bg-opacity-80 cursor-pointer" >
+                    >
                         Profile
                     </Sidebar.Item>
+                    {currentUser.isAdmin &&
+                        <Sidebar.Item
+                            active={tab === "posts"}
+                            icon={HiDocumentText}
+                            onClick={() => navigate("/dashboard?tab=posts")}
+                            className="dark:hover:bg-emerald-400 dark:hover:bg-opacity-80 cursor-pointer" >
+                            Posts
+                        </Sidebar.Item>
+                    }
                     <Sidebar.Item
                         icon={HiArrowSmRight}
                         onClick={handleSignOut}

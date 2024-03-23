@@ -2,6 +2,7 @@ import React, { useState, useEffect } from 'react'
 import { useLocation } from 'react-router-dom'
 import DashSideBar from '../components/DashSideBar';
 import DashProfile from '../components/DashProfile';
+import DashPosts from '../components/DashPosts';
 
 const Dashboard = () => {
     const location = useLocation();
@@ -28,6 +29,9 @@ const Dashboard = () => {
             <div className='overflow-hidden relative w-full flex-col flex items-center justify-center'>
                 {tab === "profile" &&
                     <DashProfile />
+                }
+                {tab === "posts" &&
+                    <DashPosts />
                 }
             </div>
         </div >
