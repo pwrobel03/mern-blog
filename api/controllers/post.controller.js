@@ -48,7 +48,6 @@ export const getPosts = async (req, res, next) => {
             .sort({ updatedAt: sortDirection })
             .skip(startIndex)
             .limit(limit)
-
         // count all posts and post from previous month
         const totalPosts = await Post.countDocuments();
         const date = new Date();
@@ -72,8 +71,6 @@ export const getPosts = async (req, res, next) => {
 }
 
 export const deletePost = async (req, res, next) => {
-    console.log(req.user);
-    console.log(req.user);
     if (!req.user.isAdmin || req.user.userId !== req.params.userId) {
         return next(403, "You're not allowed to delete this post")
     }
@@ -83,6 +80,32 @@ export const deletePost = async (req, res, next) => {
         res
             .status(200)
             .json("The post has been deleted!")
+    } catch (error) {
+        next(error)
+    }
+}
+
+export const updatePost = async (req, res, next) => {
+    if (!req.user.isAdmin || req.user.userId !== req.params.userId) {
+        return next(403, "You're not allowed to update this post")
+    }
+
+    try {
+        const updatedPost = await Post.findByIdAndUpdate(
+            req.params.postId,
+            {
+                $set: {
+                    title: req.body.title,
+                    content: req.body.content,
+                    category: req.body.category,
+                    image: req.body.image,
+                    title: req.body.title,
+                }
+            }, { new: true }
+        )
+        res
+            .status(200)
+            .json(updatedPost)
     } catch (error) {
         next(error)
     }

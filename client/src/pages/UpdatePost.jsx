@@ -1,7 +1,7 @@
 import { Alert, Button, FileInput, Select, TextInput } from 'flowbite-react'
 import React, { useEffect, useState } from 'react'
-import { useDispatch } from 'react-redux'
-import { useNavigate } from "react-router-dom";
+import { useDispatch, useSelector } from 'react-redux'
+import { useNavigate, useParams } from "react-router-dom";
 import { CircularProgressbar } from 'react-circular-progressbar'
 import "react-circular-progressbar/dist/styles.css"
 import {
@@ -16,7 +16,7 @@ import { app } from "../firebase"
 import ReactQuill from 'react-quill';
 import 'react-quill/dist/quill.snow.css';
 
-const CreatePost = () => {
+const UpdatePost = () => {
     // const dispatch = useDispatch();
     const navigate = useNavigate()
     const [file, setFile] = useState(null);
@@ -24,13 +24,17 @@ const CreatePost = () => {
     const [imageUploadError, setImageUploadError] = useState(null);
     const [formData, setFormData] = useState({});
     const [publishError, setPublishError] = useState();
+    const { postId } = useParams();
+    const { currentUser } = useSelector(state => state.user);
 
     const submitHandler = async (event) => {
         event.preventDefault()
         setPublishError(null)
         try {
-            const res = await fetch('/api/post/create-post', {
-                method: 'POST',
+            console.log(currentUser);
+            console.log(formData);
+            const res = await fetch(`/api/post/update-post/${formData._id}/${currentUser._id}`, {
+                method: 'PUT',
                 headers: {
                     'Content-Type': 'application/json',
                 },
@@ -38,6 +42,7 @@ const CreatePost = () => {
             });
             const data = await res.json();
             if (!res.ok) {
+                console.log(data.message);
                 if (data.message.includes("title")) {
                     setPublishError("Article with this title already exist")
                 } else {
@@ -50,6 +55,29 @@ const CreatePost = () => {
             setPublishError('Something went wrong');
         }
     }
+
+    useEffect(() => {
+        try {
+            const fetchPost = async () => {
+                console.log(postId);
+                const res = await fetch(`/api/post/get-posts?postId=${postId}`)
+                const data = await res.json()
+                if (!res.ok) {
+                    console.log(data.message);
+                    setPublishError(data.message)
+                    return
+                }
+
+                if (res.ok) {
+                    setPublishError(null);
+                    setFormData(data.posts[0]);
+                }
+            }
+            fetchPost()
+        } catch (error) {
+            setPublishError(error)
+        }
+    }, [postId])
 
     const handleUploadImage = async () => {
         try {
@@ -91,13 +119,14 @@ const CreatePost = () => {
 
     return (
         <div className='p-3 px-6 max-w-3xl w-full mx-auto min-h-screen'>
-            <h1 className='text-center text-3xl my-7 font-semibold'>Create a post</h1>
+            <h1 className='text-center text-3xl my-7 font-semibold'>Update a post</h1>
             <form
                 onSubmit={submitHandler}
                 className='w-full flex flex-col gap-4'>
                 <div className="w-full flex gap-4 sm:flex-row flex-col justify-between">
                     <TextInput
                         className='w-full'
+                        value={formData.title}
                         type='text'
                         placeholder="Title"
                         onChange={(e) => setFormData({ ...formData, title: e.target.value })}
@@ -107,6 +136,7 @@ const CreatePost = () => {
                     />
                     <Select
                         id='postCategory'
+                        value={formData.category}
                         onChange={(e) => setFormData({ ...formData, category: e.target.value })}>
                         <option value={"uncategorized"}>Select a category</option>
                         <option value={"javascript"}>Javascript</option>
@@ -178,7 +208,7 @@ const CreatePost = () => {
                 <Button
                     type='submit'
                     color='emerald'
-                    className='text-white customUploadImageButton dark:customUploadImageButtonDark bg-gradient-to-r from-emerald-400 to-emerald-200 dark:bg-gradient-to-r'>Publish</Button>
+                    className='text-white customUploadImageButton dark:customUploadImageButtonDark bg-gradient-to-r from-emerald-400 to-emerald-200 dark:bg-gradient-to-r'>Update</Button>
                 {publishError && (
                     <Alert color='failure'>
                         {publishError}
@@ -189,4 +219,4 @@ const CreatePost = () => {
     )
 }
 
-export default CreatePost
+export default UpdatePost
