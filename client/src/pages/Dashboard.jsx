@@ -19,21 +19,24 @@ const Dashboard = () => {
 
 
     return (
-        <div className='min-h-screen relative flex flex-col  md:flex-row'>
+        <div className='min-h-screen flex flex-col w-full md:flex-row'>
             {/* Sidebar */}
-            <div className='flex md:w-[20vw] md:max-w-[260px]'>
+            <div className='flex w-full md:w-[20vw] md:max-w-[260px]'>
                 <DashSideBar />
             </div>
             {/* Content area */}
             {/* Profile */}
-            <div className='overflow-hidden relative w-full flex-col flex items-center justify-center'>
-                {tab === "profile" &&
+            {tab === "profile" ?
+                <div className='overflow-hidden relative w-full flex-col flex items-center justify-center'>
                     <DashProfile />
-                }
-                {tab === "posts" &&
-                    <DashPosts />
-                }
-            </div>
+                </div>
+                :
+                <div className='w-full overflow-hidden'>
+                    {tab === "posts" &&
+                        <DashPosts />
+                    }
+                </div>
+            }
         </div >
     )
 }
