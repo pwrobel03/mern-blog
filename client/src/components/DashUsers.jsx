@@ -12,11 +12,11 @@ export default function DashUsers() {
     const [users, setUsers] = useState([]);
     const [showMore, setShowMore] = useState(true);
     const [showModal, setShowModal] = useState(false);
-    const [postIdToDelete, setPostIdToDelete] = useState('');
+    const [userIdToDelete, setUserIdToDelete] = useState('');
 
-    // get posts 
+    // get users
     useEffect(() => {
-        const fetchPosts = async () => {
+        const fetchUsers = async () => {
             try {
                 const res = await fetch(`/api/user/get-users?userId=${currentUser._id}`);
                 const data = await res.json();
@@ -31,11 +31,11 @@ export default function DashUsers() {
             }
         };
         if (currentUser.isAdmin) {
-            fetchPosts();
+            fetchUsers();
         }
     }, [currentUser._id]);
 
-    //  get more posts
+    //  get more users
     const handleShowMore = async () => {
         const startIndex = users.length;
         try {
@@ -54,10 +54,10 @@ export default function DashUsers() {
         }
     };
 
-    const deletePostHandler = async () => {
+    const deleteUserHandler = async () => {
         setShowModal(false)
         try {
-            const res = await fetch(`/api/post/delete-post/${postIdToDelete}/${currentUser._id}`,
+            const res = await fetch(`/api/user/delete/${userIdToDelete}`,
                 { method: "DELETE" }
             )
 
@@ -65,12 +65,11 @@ export default function DashUsers() {
             if (!res.ok) {
                 console.log(data.message);
             } else {
-                setUsers((prev) => prev.filter((post) => post._id !== postIdToDelete))
+                setUsers((prev) => prev.filter((user) => user._id !== userIdToDelete))
             }
         } catch (error) {
             console.log(error);
         }
-        // await fetch("/api/post/delete-post")
     }
 
     return (
@@ -113,7 +112,7 @@ export default function DashUsers() {
                                         <span
                                             onClick={() => {
                                                 setShowModal(true)
-                                                setPostIdToDelete(post._id)
+                                                setUserIdToDelete(user._id)
                                             }}
                                             className='text-red-500 cursor-pointer uppercase underline-offset-2 underline hover:underline-offset-4'
                                         >
@@ -147,11 +146,11 @@ export default function DashUsers() {
                     <div className='text-center'>
                         <CiWarning className='w-64 h-64 text-zinc-400 dark:text-zinc-700 mb-4 mx-auto' />
                     </div>
-                    <h3 className='text-center font-semibold text-lg text-zinc-500'>Are you sure you want to delete this post?</h3>
+                    <h3 className='text-center font-semibold text-lg text-zinc-500'>Are you sure you want to delete selected user?</h3>
                     <div className='flex px-6 mt-4 flex-row justify-between'>
                         <Button
                             color='failure'
-                            onClick={deletePostHandler}>
+                            onClick={deleteUserHandler}>
                             Yes, I'm sure
                         </Button>
                         <Button
