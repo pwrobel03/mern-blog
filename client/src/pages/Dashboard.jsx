@@ -3,6 +3,7 @@ import { useLocation } from 'react-router-dom'
 import DashSideBar from '../components/DashSideBar';
 import DashProfile from '../components/DashProfile';
 import DashPosts from '../components/DashPosts';
+import DashUsers from '../components/DashUsers';
 
 const Dashboard = () => {
     const location = useLocation();
@@ -11,7 +12,7 @@ const Dashboard = () => {
     useEffect(() => {
         const urlParams = new URLSearchParams(location.search)
         const tabFromUrl = urlParams.get("tab")
-        console.log(tabFromUrl);
+        // console.log(tabFromUrl);
         if (tabFromUrl) {
             setTab(tabFromUrl)
         }
@@ -31,9 +32,12 @@ const Dashboard = () => {
                     <DashProfile />
                 </div>
                 :
-                <div className='w-full overflow-hidden'>
+                <div className='w-full overflow-x-auto h-full'>
                     {tab === "posts" &&
                         <DashPosts />
+                    }
+                    {tab === "users" &&
+                        <DashUsers />
                     }
                 </div>
             }

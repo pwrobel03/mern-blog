@@ -1,6 +1,6 @@
 import React, { useEffect, useState } from 'react'
 import { useLocation, useNavigate } from 'react-router-dom'
-import { HiUser, HiArrowSmRight, HiDocumentText } from "react-icons/hi"
+import { HiUser, HiArrowSmRight, HiDocumentText, HiOutlineUserGroup } from "react-icons/hi"
 import { Sidebar } from 'flowbite-react'
 import { useDispatch } from 'react-redux'
 import { useSelector } from 'react-redux'
@@ -16,7 +16,6 @@ const DashSideBar = () => {
     useEffect(() => {
         const urlParams = new URLSearchParams(location.search)
         const tabFromUrl = urlParams.get("tab")
-        console.log(tabFromUrl);
         if (tabFromUrl) {
             setTab(tabFromUrl)
         }
@@ -38,9 +37,11 @@ const DashSideBar = () => {
             console.log("SignOut error" + error.message);
         }
     }
-    useEffect(() => {
-        console.log(tab);
-    })
+
+    // Monitor active tab
+    // useEffect(() => {
+    //     console.log(tab);
+    // })
     return (
         <Sidebar className='w-full'>
             <Sidebar.Items className='custom-dashboard-sidebar' >
@@ -61,6 +62,15 @@ const DashSideBar = () => {
                             onClick={() => navigate("/dashboard?tab=posts")}
                             className="dark:hover:bg-emerald-400 dark:hover:bg-opacity-80 cursor-pointer" >
                             Posts
+                        </Sidebar.Item>
+                    }
+                    {currentUser.isAdmin &&
+                        <Sidebar.Item
+                            active={tab === "users"}
+                            icon={HiOutlineUserGroup}
+                            onClick={() => navigate("/dashboard?tab=users")}
+                            className="dark:hover:bg-emerald-400 dark:hover:bg-opacity-80 cursor-pointer" >
+                            Users
                         </Sidebar.Item>
                     }
                     <Sidebar.Item

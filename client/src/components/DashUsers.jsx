@@ -4,11 +4,12 @@ import { useSelector } from 'react-redux';
 import { Link } from 'react-router-dom';
 import { HiOutlineExclamationCircle } from 'react-icons/hi';
 import { CiWarning } from 'react-icons/ci';
+import { FaCheck, FaTimes } from 'react-icons/fa';
 import { set } from 'mongoose';
 
-export default function DashPosts() {
+export default function DashUsers() {
     const { currentUser } = useSelector((state) => state.user);
-    const [userPosts, setUserPosts] = useState([]);
+    const [users, setUsers] = useState([]);
     const [showMore, setShowMore] = useState(true);
     const [showModal, setShowModal] = useState(false);
     const [postIdToDelete, setPostIdToDelete] = useState('');
@@ -17,11 +18,11 @@ export default function DashPosts() {
     useEffect(() => {
         const fetchPosts = async () => {
             try {
-                const res = await fetch(`/api/post/get-posts?userId=${currentUser._id}`);
+                const res = await fetch(`/api/user/get-users?userId=${currentUser._id}`);
                 const data = await res.json();
                 if (res.ok) {
-                    setUserPosts(data.posts);
-                    if (data.posts.length < 9) {
+                    setUsers(data.users);
+                    if (data.users.length < 10) {
                         setShowMore(false);
                     }
                 }
@@ -36,15 +37,15 @@ export default function DashPosts() {
 
     //  get more posts
     const handleShowMore = async () => {
-        const startIndex = userPosts.length;
+        const startIndex = users.length;
         try {
             const res = await fetch(
-                `/api/post/get-posts?userId=${currentUser._id}&startIndex=${startIndex}`
+                `/api/user/get-users?userId=${currentUser._id}&startIndex=${startIndex}`
             );
             const data = await res.json();
             if (res.ok) {
-                setUserPosts((prev) => [...prev, ...data.posts]);
-                if (data.posts.length < 9) {
+                setUsers((prev) => [...prev, ...data.users]);
+                if (data.users.length < 10) {
                     setShowMore(false);
                 }
             }
@@ -64,7 +65,7 @@ export default function DashPosts() {
             if (!res.ok) {
                 console.log(data.message);
             } else {
-                setUserPosts((prev) => prev.filter((post) => post._id !== postIdToDelete))
+                setUsers((prev) => prev.filter((post) => post._id !== postIdToDelete))
             }
         } catch (error) {
             console.log(error);
@@ -74,43 +75,40 @@ export default function DashPosts() {
 
     return (
         <div className='mt-4 min-h-screen table-auto overflow-x-scroll p-3 scrollbar scrollbar-track-gray-100 scrollbar-thumb-gray-200 dark:scrollbar-track-[#313134] dark:scrollbar-thumb-[#27272A]'>
-            {currentUser.isAdmin && userPosts.length > 0 ? (
+            {currentUser.isAdmin && users.length > 0 ? (
                 <>
                     <Table hoverable className='shadow-md'>
                         <Table.Head className='text-center'>
-                            <Table.HeadCell>Date updated</Table.HeadCell>
-                            <Table.HeadCell>Post image</Table.HeadCell>
-                            <Table.HeadCell>Post title</Table.HeadCell>
-                            <Table.HeadCell>Category</Table.HeadCell>
+                            <Table.HeadCell>Date created</Table.HeadCell>
+                            <Table.HeadCell>User image</Table.HeadCell>
+                            <Table.HeadCell>Username</Table.HeadCell>
+                            <Table.HeadCell>Email</Table.HeadCell>
+                            <Table.HeadCell>Admin</Table.HeadCell>
                             <Table.HeadCell>Delete</Table.HeadCell>
-                            <Table.HeadCell>
-                                <span>Edit</span>
-                            </Table.HeadCell>
                         </Table.Head>
-                        {userPosts.map((post) => (
-                            <Table.Body key={post._id} className='divide-y'>
+                        {users.map((user) => (
+                            <Table.Body key={user._id} className='divide-y'>
                                 <Table.Row className='bg-white dark:border-gray-700 dark:bg-gray-800'>
                                     <Table.Cell className='text-center'>
-                                        {new Date(post.updatedAt).toLocaleDateString()}
+                                        {new Date(user.createdAt).toLocaleDateString()}
                                     </Table.Cell>
                                     <Table.Cell className='flex items-center justify-center'>
-                                        <Link to={`/post/${post.slug}`}>
-                                            <img
-                                                src={post.image}
-                                                alt={post.title}
-                                                className='w-24 aspect-video object-cover bg-gray-500'
-                                            />
-                                        </Link>
+                                        <img
+                                            src={user.profilePicture}
+                                            alt='profile picture'
+                                            className='w-10 h-10 rounded-full object-cover' />
                                     </Table.Cell>
-                                    <Table.Cell>
-                                        <Link
-                                            className='font-medium text-gray-900 dark:text-white'
-                                            to={`/post/${post.slug}`}
-                                        >
-                                            {post.title}
-                                        </Link>
+                                    <Table.Cell className='text-black dark:text-white'>
+                                        {user.username}
                                     </Table.Cell>
-                                    <Table.Cell className='text-center'>{post.category}</Table.Cell>
+                                    <Table.Cell >
+                                        {user.email}
+                                    </Table.Cell>
+                                    <Table.Cell className=''>
+                                        <div className='flex items-start justify-center'>
+                                            {user.isAdmin ? <FaCheck color='green'></FaCheck> : <FaTimes color='red'></FaTimes>}
+                                        </div>
+                                    </Table.Cell>
                                     <Table.Cell className='text-center'>
                                         <span
                                             onClick={() => {
@@ -121,14 +119,6 @@ export default function DashPosts() {
                                         >
                                             Delete
                                         </span>
-                                    </Table.Cell>
-                                    <Table.Cell className='text-center'>
-                                        <Link
-                                            className='text-teal-500 uppercase underline-offset-2 underline hover:underline-offset-4'
-                                            to={`/update-post/${post._id}`}
-                                        >
-                                            <span>Edit</span>
-                                        </Link>
                                     </Table.Cell>
                                 </Table.Row>
                             </Table.Body>
@@ -141,10 +131,10 @@ export default function DashPosts() {
                         >
                             Show more
                         </Button>
-                    ) : <p className='mt-2 font-bold text-center'>All posts was loaded.</p>}
+                    ) : <p className='mt-2 font-bold text-center'>All users was loaded.</p>}
                 </>
             ) : (
-                <p>You have no posts yet!</p>
+                <p>You have no users to show!</p>
             )}
             <Modal
                 show={showModal}
