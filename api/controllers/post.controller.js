@@ -91,6 +91,7 @@ export const updatePost = async (req, res, next) => {
     }
 
     try {
+        // TODO: In my opinion this update request need to change slug tooo...
         const updatedPost = await Post.findByIdAndUpdate(
             req.params.postId,
             {

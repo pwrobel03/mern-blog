@@ -1,6 +1,7 @@
 import React, { useEffect, useState } from 'react'
 import { useLocation, useNavigate } from 'react-router-dom'
 import { HiUser, HiArrowSmRight, HiDocumentText, HiOutlineUserGroup } from "react-icons/hi"
+import { PiArticleMedium } from "react-icons/pi";
 import { Sidebar } from 'flowbite-react'
 import { useDispatch } from 'react-redux'
 import { useSelector } from 'react-redux'
@@ -52,6 +53,7 @@ const DashSideBar = () => {
                         label={currentUser.isAdmin ? "Admin" : "User"}
                         labelColor="green"
                         onClick={() => navigate("/dashboard?tab=profile")}
+                        className="dark:hover:bg-emerald-400 hover:bg-emerald-200 dark:hover:bg-opacity-80 cursor-pointer"
                     >
                         Profile
                     </Sidebar.Item>
@@ -60,8 +62,16 @@ const DashSideBar = () => {
                             active={tab === "posts"}
                             icon={HiDocumentText}
                             onClick={() => navigate("/dashboard?tab=posts")}
-                            className="dark:hover:bg-emerald-400 dark:hover:bg-opacity-80 cursor-pointer" >
+                            className="dark:hover:bg-emerald-400 hover:bg-emerald-200 dark:hover:bg-opacity-80 cursor-pointer" >
                             Posts
+                        </Sidebar.Item>
+                    }
+                    {currentUser.isAdmin &&
+                        <Sidebar.Item
+                            icon={PiArticleMedium}
+                            onClick={() => navigate("/create-post")}
+                            className="dark:hover:bg-emerald-400 hover:bg-emerald-200 dark:hover:bg-opacity-80 cursor-pointer" >
+                            New post
                         </Sidebar.Item>
                     }
                     {currentUser.isAdmin &&
@@ -69,14 +79,14 @@ const DashSideBar = () => {
                             active={tab === "users"}
                             icon={HiOutlineUserGroup}
                             onClick={() => navigate("/dashboard?tab=users")}
-                            className="dark:hover:bg-emerald-400 dark:hover:bg-opacity-80 cursor-pointer" >
+                            className="dark:hover:bg-emerald-400 hover:bg-emerald-200 dark:hover:bg-opacity-80 cursor-pointer" >
                             Users
                         </Sidebar.Item>
                     }
                     <Sidebar.Item
                         icon={HiArrowSmRight}
                         onClick={handleSignOut}
-                        className="dark:hover:bg-emerald-400 dark:hover:bg-opacity-80 cursor-pointer" >
+                        className="dark:hover:bg-emerald-400 hover:bg-emerald-200 dark:hover:bg-opacity-80 cursor-pointer" >
                         Sign Out
                     </Sidebar.Item>
                 </Sidebar.ItemGroup>
